@@ -1,0 +1,1024 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Sian — 아이디어에서 4개 시안과 완성형 페이지까지</title>
+<link rel="icon" type="image/svg+xml" href="/assets/sian/favicon.svg" />
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+<script src="/assets/meta-pixel.js" defer></script>
+<style id="shared-css">
+/* ---------- Shared design system: Korean D2C tone (Pretendard, teal+amber) ---------- */
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+:where(:root) {
+  --ease: cubic-bezier(0.4, 0.0, 0.2, 1);
+  --ease-out: cubic-bezier(0.0, 0.0, 0.2, 1);
+  --t-fast: 120ms;
+  --t-base: 180ms;
+  --t-slow: 260ms;
+}
+
+@keyframes pageIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+body { animation: pageIn 380ms var(--ease-out) both; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; scroll-behavior: auto !important; }
+}
+
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 6px; }
+html { scroll-behavior: smooth; }
+
+:root {
+  /* Type */
+  --font-sans: 'Pretendard Variable', 'Pretendard', 'Noto Sans KR', system-ui, -apple-system, "Helvetica Neue", sans-serif;
+  --font-mono: 'SFMono-Regular', Consolas, 'JetBrains Mono', ui-monospace, Menlo, monospace;
+
+  /* Neutral palette - Korean commerce */
+  --bg: #f4f7f8;
+  --bg-soft: #edf7f5;
+  --bg-sunken: #e9f1f3;
+  --panel: #ffffff;
+  --line: #d3dde2;
+  --line-strong: #b8c8ce;
+  --ink: #0b1f2a;
+  --ink-2: #111827;
+  --ink-3: #5f6b76;
+  --ink-4: #7b8791;
+
+  /* Default accent (overridden per product) */
+  --accent: #0f766e;
+  --accent-dark: #115e59;
+  --accent-soft: #e7f7f3;
+  --accent-line: #99f6e4;
+  --accent-ink: #ffffff;
+  --warm: #f59e0b;
+  --warm-soft: #fff7ed;
+  --warm-ink: #c2410c;
+
+  /* Layout */
+  --container: 1180px;
+  --radius: 8px;
+  --radius-lg: 8px;
+  --shadow: 0 18px 50px rgba(15, 23, 42, 0.10);
+  --shadow-card: 0 8px 26px rgba(15, 23, 42, 0.07);
+}
+
+html, body {
+  background: linear-gradient(180deg, #e9f1f3 0%, #f8fafc 38%, #f4f7f8 100%);
+  color: var(--ink-2);
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.6;
+  letter-spacing: 0;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+a { color: inherit; text-decoration: none; }
+button { font-family: inherit; cursor: pointer; border: 0; background: none; }
+img, svg { display: block; max-width: 100%; }
+
+.container { width: min(var(--container), calc(100% - 32px)); margin: 0 auto; }
+.section { padding: 78px 0; border-bottom: 1px solid var(--line); }
+.section.tight { padding: 56px 0; }
+.section.hero { padding: 64px 0 48px; }
+
+/* Nav */
+.nav {
+  position: sticky; top: 0; z-index: 50;
+  background: rgba(255,255,255,0.9);
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid rgba(211, 221, 226, 0.86);
+}
+.nav-inner { display: flex; align-items: center; justify-content: space-between; height: 72px; gap: 20px; }
+.brand { display: flex; align-items: center; gap: 12px; font-weight: 800; font-size: 16px; color: var(--ink); }
+.brand-mark { width: 40px; height: 40px; border-radius: 10px; background: #fff; border: 1px solid var(--line); display: inline-grid; place-items: center; transition: transform var(--t-base) var(--ease); box-shadow: 0 8px 20px rgba(15, 23, 42, 0.06); }
+.brand-mark img { width: 24px; height: 24px; display: block; object-fit: contain; }
+.brand:hover .brand-mark { transform: rotate(-6deg) scale(1.06); }
+.nav-links { display: flex; gap: 4px; font-size: 14px; flex-wrap: wrap; justify-content: center; }
+.nav-links a { padding: 8px 12px; border-radius: 8px; color: #374151; font-weight: 700; transition: all var(--t-fast) var(--ease); }
+.nav-links a:hover { background: var(--accent-soft); color: var(--accent-dark); }
+.nav-cta { display: flex; gap: 10px; align-items: center; }
+
+/* Buttons */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  min-height: 42px; padding: 10px 16px;
+  border: 1px solid #9ca3af; border-radius: 8px;
+  background: #fff; color: #111827;
+  font-family: inherit; font-size: 14px; font-weight: 800;
+  cursor: pointer; white-space: nowrap;
+  transition: transform var(--t-fast) var(--ease), background var(--t-fast) var(--ease), border-color var(--t-fast) var(--ease), color var(--t-fast) var(--ease);
+}
+.btn:hover { transform: translateY(-1px); border-color: #4b5563; }
+.btn:active { transform: translateY(0); }
+.btn-primary { border-color: var(--accent); background: var(--accent); color: #fff; }
+.btn-primary:hover { border-color: var(--accent-dark); background: var(--accent-dark); }
+.btn-primary .arr { transition: transform var(--t-base) var(--ease); }
+.btn-primary:hover .arr { transform: translateX(3px); }
+.btn-outline { border-color: #b8c8ce; background: rgba(255, 255, 255, 0.76); color: var(--ink); }
+.btn-outline:hover { background: #fff; border-color: var(--ink-3); }
+.btn-outline .arr { transition: transform var(--t-base) var(--ease); }
+.btn-outline:hover .arr { transform: translateX(3px); }
+.btn-lg { min-height: 50px; padding: 12px 22px; font-size: 16px; }
+.btn .arr { font-family: var(--font-mono); font-size: 14px; opacity: .9; }
+
+/* Type */
+.eyebrow {
+  display: inline-flex; align-items: center; gap: 8px;
+  color: var(--accent-dark); font-size: 13px; font-weight: 900;
+  text-transform: uppercase; letter-spacing: 0.04em;
+}
+.eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
+
+.h-display {
+  font-size: clamp(40px, 6vw, 72px); line-height: 1.04; letter-spacing: -0.012em; font-weight: 900;
+  color: var(--ink); text-wrap: balance;
+}
+.h-section {
+  font-size: clamp(28px, 3.6vw, 44px); line-height: 1.1; letter-spacing: -0.008em; font-weight: 900;
+  color: var(--ink); text-wrap: balance; max-width: 780px;
+}
+.h-card { font-size: 20px; line-height: 1.3; font-weight: 800; color: var(--ink); }
+.sub {
+  font-size: 18px; line-height: 1.7; color: var(--ink-3); max-width: 660px; text-wrap: pretty;
+  font-weight: 500;
+}
+.kicker {
+  font-family: var(--font-sans); font-size: 13px; letter-spacing: 0.04em;
+  color: var(--accent-dark); text-transform: uppercase; font-weight: 900;
+}
+
+.section-head { display: flex; flex-direction: column; gap: 14px; margin-bottom: 34px; max-width: 780px; }
+
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+
+/* Cards */
+.card {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 22px;
+  display: flex; flex-direction: column; gap: 12px;
+  box-shadow: var(--shadow-card);
+  transition: border-color var(--t-base) var(--ease), transform var(--t-base) var(--ease), box-shadow var(--t-base) var(--ease);
+}
+.card:hover { border-color: var(--accent); transform: translateY(-2px); box-shadow: 0 16px 36px rgba(15, 23, 42, 0.10); }
+.card .num { font-size: 12px; color: var(--ink-4); font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; }
+.card p { color: var(--ink-3); font-size: 15px; line-height: 1.65; font-weight: 500; }
+
+.card-soft { background: var(--bg-soft); border: 1px solid var(--line); }
+.card-soft:hover { background: #fff; }
+
+/* Placeholder */
+.ph {
+  position: relative;
+  background:
+    repeating-linear-gradient(135deg, rgba(15,23,42,0.04) 0 1px, transparent 1px 8px),
+    var(--bg-soft);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--ink-3);
+  font-size: 13px; font-weight: 700;
+}
+.ph::after {
+  content: ""; position: absolute; inset: 0;
+  background: linear-gradient(180deg, rgba(255,255,255,0) 60%, rgba(255,255,255,0.9));
+  pointer-events: none; border-radius: inherit;
+}
+.ph > span { position: relative; z-index: 1; padding: 4px 10px; background: rgba(255,255,255,0.92); border-radius: 6px; border: 1px solid var(--line); }
+
+/* Tag/chip */
+.tag {
+  display: inline-flex; align-items: center; gap: 6px;
+  height: 26px; padding: 0 11px; border-radius: 999px;
+  font-size: 12px; font-weight: 800;
+  background: var(--accent-soft); color: var(--accent-dark); border: 1px solid var(--accent-line);
+  transition: all var(--t-fast) var(--ease);
+}
+.tag:hover { filter: brightness(0.98); }
+.tag.solid { background: var(--accent); color: #fff; border-color: var(--accent); }
+
+/* Stat row */
+.stat-row { display: grid; grid-template-columns: repeat(4, 1fr); border-top: 1px solid var(--line); background: #fff; border-radius: 8px; overflow: hidden; box-shadow: var(--shadow-card); }
+.stat { padding: 24px 18px; border-right: 1px solid var(--line); transition: background var(--t-base) var(--ease); }
+.stat:hover { background: var(--bg-soft); }
+.stat:last-child { border-right: 0; }
+.stat .v { font-size: 30px; font-weight: 900; color: var(--ink); letter-spacing: -0.01em; }
+.stat .l { font-size: 13px; color: var(--ink-3); margin-top: 4px; font-weight: 700; }
+
+/* FAQ */
+.faq { border-top: 1px solid var(--line); }
+.faq-row {
+  padding: 22px 16px; border-bottom: 1px solid var(--line);
+  display: grid; grid-template-columns: 1fr 2fr; gap: 28px; align-items: start;
+  border-radius: 8px;
+  transition: background var(--t-base) var(--ease);
+}
+.faq-row:hover { background: var(--accent-soft); }
+.faq-q { font-size: 17px; font-weight: 800; color: var(--ink); transition: color var(--t-fast) var(--ease); }
+.faq-row:hover .faq-q { color: var(--accent-dark); }
+.faq-a { font-size: 15px; color: var(--ink-3); line-height: 1.7; font-weight: 500; }
+
+/* Footer */
+.footer { padding: 56px 0 64px; background: rgba(255,255,255,0.5); border-top: 1px solid var(--line); }
+.footer-row { display: flex; justify-content: space-between; gap: 36px; flex-wrap: wrap; }
+.footer-col { display: flex; flex-direction: column; gap: 8px; font-size: 13px; color: var(--ink-3); font-weight: 600; }
+.footer-col h5 { font-size: 12px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--ink-4); margin-bottom: 6px; font-weight: 900; }
+.footer-col a { display: block; }
+.footer-col a:hover { color: var(--accent-dark); }
+.footer-bottom { margin-top: 40px; padding-top: 24px; border-top: 1px solid var(--line); display: flex; justify-content: space-between; align-items: center; font-size: 12px; color: var(--ink-4); font-weight: 700; }
+
+/* Helpers */
+.row { display: flex; align-items: center; gap: 12px; }
+.col { display: flex; flex-direction: column; gap: 12px; }
+.center { text-align: center; }
+.muted { color: var(--ink-3); }
+.mono { font-family: var(--font-mono); }
+.divider { height: 1px; background: var(--line); width: 100%; }
+
+.dotgrid {
+  background-image: radial-gradient(circle at 1px 1px, rgba(11,31,42,0.06) 1px, transparent 0);
+  background-size: 22px 22px;
+}
+
+/* Responsive (shared) */
+@media (max-width: 960px) {
+  .section { padding: 56px 0; }
+  .section.tight { padding: 40px 0; }
+  .section.hero { padding: 48px 0 32px; }
+  .nav-inner { height: 60px; }
+  .nav-links { display: none; }
+  .section-head { margin-bottom: 28px; gap: 10px; }
+  .stat-row { grid-template-columns: repeat(2, 1fr); }
+  .stat { border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+  .stat:nth-child(2n) { border-right: 0; }
+  .stat:nth-last-child(-n+2) { border-bottom: 0; }
+  .stat .v { font-size: 24px; }
+  .faq-row { grid-template-columns: 1fr; gap: 6px; padding: 16px 12px; }
+  .footer { padding: 40px 0 48px; }
+  .footer-bottom { flex-direction: column; gap: 8px; align-items: flex-start; }
+}
+@media (max-width: 560px) {
+  .btn-lg { min-height: 44px; padding: 10px 18px; font-size: 14px; }
+}
+</style>
+<style>
+  :root {
+    --bg: #f7fef9;
+    --bg-soft: #f0fdf4;
+    --bg-sunken: #dcfce7;
+    --line: #c9f5d6;
+    --line-strong: #86efac;
+    --accent: #4ade80;
+    --accent-dark: #15803d;
+    --accent-soft: #f0fdf4;
+    --accent-ink: #052e16;
+    --accent-line: #bbf7d0;
+    --pop-purple: #7c3aed;
+    --pop-lime: #84cc16;
+    --pop-blue: #2563eb;
+  }
+  body {
+    background: linear-gradient(180deg, #dcfce7 0%, #f7fef9 42%, #f0fdf4 100%);
+  }
+  .btn-primary { color: var(--accent-ink); }
+  .btn-primary:hover { color: #fff; }
+
+  /* Hero composer */
+  .composer {
+    margin-top: 56px;
+    background: var(--bg-soft);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 22px;
+    display: grid;
+    grid-template-columns: 1fr 280px;
+    gap: 20px;
+    box-shadow: 0 30px 60px -30px rgba(34, 197, 94, 0.22);
+  }
+
+  .composer-main { display: flex; flex-direction: column; gap: 16px; }
+  .input-card {
+    background: #fff; border: 1px solid var(--line); border-radius: 10px;
+    padding: 18px;
+    display: flex; flex-direction: column; gap: 12px;
+  }
+  .input-label { font-family: var(--font-mono); font-size: 10.5px; color: var(--ink-4); text-transform: uppercase; letter-spacing: 0.06em; }
+  .input-field {
+    background: var(--bg-soft); border: 1px solid var(--line); border-radius: 8px;
+    padding: 14px 16px; font-size: 14px; color: var(--ink);
+    display: flex; align-items: center; gap: 10px;
+  }
+  .input-field .prefix { color: var(--ink-4); font-family: var(--font-mono); font-size: 12px; }
+  .input-field .text { flex: 1; }
+  .input-field .cursor { display: inline-block; width: 2px; height: 16px; background: var(--accent-dark); vertical-align: -3px; animation: blink 1s infinite; }
+  @keyframes blink { 0%, 50% { opacity: 1; } 51%, 100% { opacity: 0; } }
+
+  /* 4 thumbnails grid */
+  .thumbs-wrap { display: flex; flex-direction: column; gap: 12px; }
+  .thumbs-head { display: flex; justify-content: space-between; align-items: center; }
+  .thumbs-head .l { font-family: var(--font-mono); font-size: 11px; color: var(--ink-3); }
+  .thumbs-head .r { font-family: var(--font-mono); font-size: 11px; color: var(--ink-4); }
+  .thumbs { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .thumb {
+    background: #fff; border: 1px solid var(--line); border-radius: 10px;
+    overflow: hidden;
+    position: relative;
+    display: flex; flex-direction: column;
+    transition: all .15s ease;
+  }
+  .thumb.selected { border: 1.5px solid var(--accent-dark); box-shadow: 0 8px 24px -10px rgba(34, 197, 94, 0.26); }
+  .thumb-bar {
+    padding: 8px 12px; border-bottom: 1px solid var(--line);
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .thumb-name { font-size: 12px; font-weight: 500; }
+  .thumb-id { font-family: var(--font-mono); font-size: 10px; color: var(--ink-4); }
+  .thumb-canvas {
+    aspect-ratio: 16/10;
+    padding: 14px 16px;
+    display: flex; flex-direction: column; gap: 6px;
+    position: relative;
+  }
+
+  /* Variant 1: Clean SaaS */
+  .v1 { background: #fff; }
+  .v1 .h { height: 8px; width: 60%; background: var(--ink); border-radius: 2px; }
+  .v1 .s { height: 4px; width: 70%; background: #d4d4d4; border-radius: 2px; }
+  .v1 .s.short { width: 45%; }
+  .v1 .btn { height: 10px; width: 35%; background: var(--ink); border-radius: 3px; margin-top: 4px; }
+  .v1 .dash {
+    margin-top: auto; height: 38%; width: 100%;
+    background: repeating-linear-gradient(135deg, rgba(0,0,0,0.05) 0 1px, transparent 1px 6px), #f4f4f4;
+    border: 1px solid var(--line); border-radius: 4px;
+  }
+
+  /* Variant 2: Bold Gradient */
+  .v2 { background: linear-gradient(135deg, #7c3aed 0%, #2563eb 100%); color: #fff; }
+  .v2 .h { height: 14px; width: 70%; background: rgba(255,255,255,0.95); border-radius: 2px; }
+  .v2 .s { height: 4px; width: 55%; background: rgba(255,255,255,0.5); border-radius: 2px; }
+  .v2 .btn { height: 10px; width: 30%; background: #fff; border-radius: 3px; margin-top: 4px; }
+  .v2 .dash { margin-top: auto; height: 30%; width: 100%; background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.2); border-radius: 4px; }
+
+  /* Variant 3: Editorial */
+  .v3 { background: #faf7f2; color: #1c1917; }
+  .v3 .h { height: 8px; width: 80%; background: #1c1917; border-radius: 2px; }
+  .v3 .s { height: 3px; width: 65%; background: #a8a29e; border-radius: 2px; }
+  .v3 .s.short { width: 40%; }
+  .v3 .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-top: 6px; flex: 1; }
+  .v3 .cols .c { background: repeating-linear-gradient(135deg, rgba(0,0,0,0.04) 0 1px, transparent 1px 6px), #ede9e3; border-radius: 3px; }
+
+  /* Variant 4: Product Demo */
+  .v4 { background: #0a0a0a; color: #fff; }
+  .v4 .h { height: 6px; width: 50%; background: #fafafa; border-radius: 2px; }
+  .v4 .s { height: 3px; width: 35%; background: #525252; border-radius: 2px; }
+  .v4 .dash {
+    margin-top: 6px; flex: 1; width: 100%;
+    background: linear-gradient(135deg, #1c1c1c, #2a2a2a);
+    border: 1px solid #2a2a2a; border-radius: 4px;
+    padding: 6px;
+    display: flex; flex-direction: column; gap: 3px;
+  }
+  .v4 .dash .row { height: 4px; background: #404040; border-radius: 1px; width: 100%; }
+  .v4 .dash .row.short { width: 60%; }
+  .v4 .dash .row.lime { background: #84cc16; width: 30%; }
+
+  .thumb .selected-pill {
+    position: absolute; top: 8px; right: 8px;
+    background: var(--accent-dark); color: #fff;
+    font-family: var(--font-mono); font-size: 9.5px;
+    padding: 3px 7px; border-radius: 100px;
+  }
+
+  /* Right side options panel */
+  .opt-panel {
+    background: #fff; border: 1px solid var(--line); border-radius: 10px;
+    padding: 18px; display: flex; flex-direction: column; gap: 16px;
+  }
+  .opt-section { display: flex; flex-direction: column; gap: 8px; }
+  .opt-section .k { font-family: var(--font-mono); font-size: 10.5px; color: var(--ink-4); text-transform: uppercase; letter-spacing: 0.06em; }
+  .opt-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+  .opt-chip {
+    padding: 5px 10px; border: 1px solid var(--line); border-radius: 100px;
+    font-size: 12px; color: var(--ink-2); background: #fff;
+  }
+  .opt-chip.active { background: var(--accent-dark); color: #fff; border-color: var(--accent-dark); }
+  .opt-build {
+    background: var(--accent-dark); color: #fff;
+    padding: 12px 14px; border-radius: 8px;
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: 13px; font-weight: 500;
+    margin-top: 4px;
+  }
+  .opt-build .arr { font-family: var(--font-mono); }
+
+  /* Feature row */
+  .feature-row { display: grid; grid-template-columns: 1fr 1.05fr; gap: 64px; align-items: center; padding: 56px 0; border-top: 1px solid var(--line); }
+  .feature-row:first-of-type { border-top: 0; padding-top: 0; }
+  .feature-row.reverse { grid-template-columns: 1.05fr 1fr; }
+  .feature-row.reverse .feature-copy { order: 2; }
+  .feature-copy { display: flex; flex-direction: column; gap: 16px; }
+  .feature-copy ul { display: flex; flex-direction: column; gap: 8px; margin-top: 8px; list-style: none; }
+  .feature-copy ul li { font-size: 14px; color: var(--ink-2); padding-left: 18px; position: relative; }
+  .feature-copy ul li::before { content: "→"; position: absolute; left: 0; color: var(--accent-dark); font-family: var(--font-mono); font-size: 11px; top: 2px; }
+
+  /* Brand Lock viz */
+  .brand-lock {
+    background: #fff; border: 1px solid var(--line); border-radius: 14px;
+    padding: 22px; display: flex; flex-direction: column; gap: 16px;
+  }
+  .brand-lock-head { display: flex; justify-content: space-between; align-items: center; }
+  .brand-lock-head .title { font-size: 14px; font-weight: 500; }
+  .brand-lock-head .score { font-family: var(--font-mono); font-size: 11px; color: var(--ink-3); }
+  .brand-lock-head .score b { color: var(--pop-lime); font-weight: 500; }
+
+  .lock-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .lock-tile {
+    border: 1px solid var(--line); border-radius: 8px; padding: 12px;
+    display: flex; flex-direction: column; gap: 6px;
+    background: var(--bg-soft);
+  }
+  .lock-tile .k { font-family: var(--font-mono); font-size: 10px; color: var(--ink-4); text-transform: uppercase; letter-spacing: 0.05em; }
+  .lock-tile .v { font-size: 12.5px; color: var(--ink); display: flex; align-items: center; gap: 8px; }
+  .lock-tile .v .swatch { width: 14px; height: 14px; border-radius: 4px; border: 1px solid var(--line); }
+  .lock-tile .v .lock-ic { margin-left: auto; font-family: var(--font-mono); font-size: 10px; color: var(--ink-3); }
+  .lock-warn {
+    padding: 10px 12px; border-radius: 8px;
+    background: #fff7ed; border: 1px solid #fed7aa;
+    font-size: 12.5px; color: #7c2d12;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .lock-warn .ic { font-family: var(--font-mono); font-size: 10px; color: #c2410c; background: #fff; border: 1px solid #fed7aa; padding: 2px 6px; border-radius: 4px; }
+
+  /* Launch Check */
+  .launch {
+    background: #fff; border: 1px solid var(--line); border-radius: 14px;
+    overflow: hidden;
+  }
+  .launch-head { padding: 16px 20px; border-bottom: 1px solid var(--line); display: flex; justify-content: space-between; align-items: center; }
+  .launch-head .title { font-size: 14px; font-weight: 500; }
+  .launch-head .running { font-family: var(--font-mono); font-size: 11px; color: var(--ink-3); display: flex; align-items: center; gap: 8px; }
+  .launch-head .running .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--pop-lime); }
+  .launch-row { padding: 14px 20px; display: grid; grid-template-columns: 24px 1fr auto; gap: 14px; align-items: center; border-bottom: 1px solid var(--line); font-size: 13.5px; }
+  .launch-row:last-child { border-bottom: 0; }
+  .launch-row .status { width: 18px; height: 18px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 600; }
+  .launch-row .status.ok { background: #ecfdf5; color: #047857; border: 1px solid #a7f3d0; }
+  .launch-row .status.warn { background: #fffbeb; color: #b45309; border: 1px solid #fde68a; }
+  .launch-row .status.err { background: #fef2f2; color: #b91c1c; border: 1px solid #fecaca; }
+  .launch-row .label { color: var(--ink); }
+  .launch-row .meta { font-family: var(--font-mono); font-size: 11.5px; color: var(--ink-3); }
+
+  /* Flow showcase */
+  .flow { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin-top: 40px; align-items: stretch; }
+  .flow-step {
+    background: #fff; border: 1px solid var(--line); border-radius: 10px;
+    padding: 18px; display: flex; flex-direction: column; gap: 8px;
+    position: relative;
+  }
+  .flow-step .n { font-family: var(--font-mono); font-size: 11px; color: var(--ink-4); }
+  .flow-step h4 { font-size: 14px; font-weight: 500; letter-spacing: -0.01em; }
+  .flow-step p { font-size: 12px; color: var(--ink-3); line-height: 1.5; }
+  .flow-step .arrow { position: absolute; right: -14px; top: 50%; transform: translateY(-50%); font-family: var(--font-mono); font-size: 14px; color: var(--line-strong); z-index: 1; }
+  .flow-step:last-child .arrow { display: none; }
+
+  /* Final */
+  .final {
+    background: #052e16; color: #fff; border-radius: 18px;
+    padding: 80px 64px;
+    display: flex; flex-direction: column; gap: 20px; align-items: flex-start;
+    position: relative; overflow: hidden;
+  }
+  .final::before {
+    content: ""; position: absolute; inset: 0;
+    background:
+      radial-gradient(800px 400px at 100% 0%, rgba(74, 222, 128, 0.26), transparent 60%),
+      radial-gradient(600px 400px at 0% 100%, rgba(34, 197, 94, 0.18), transparent 60%);
+    pointer-events: none;
+  }
+  .final > * { position: relative; }
+  .final .eyebrow { color: #bbf7d0; }
+  .final .eyebrow .dot { background: var(--accent); }
+  .final h2 { font-size: 52px; line-height: 1.05; letter-spacing: -0.03em; font-weight: 500; max-width: 760px; text-wrap: balance; }
+  .final p { color: #dcfce7; font-size: 17px; max-width: 540px; }
+  .final .btn-primary { background: #fff; color: #166534; }
+  .final .btn-outline { background: transparent; border-color: rgba(255,255,255,0.25); color: #fff; }
+  .lead-form { display: flex; flex-wrap: wrap; gap: 10px; align-items: flex-start; width: min(100%, 720px); margin-top: 6px; }
+  .lead-form input { height: 48px; flex: 1 1 280px; min-width: 0; border: 1px solid rgba(255,255,255,0.24); border-radius: 8px; padding: 0 16px; background: rgba(255,255,255,0.94); color: var(--ink); font: inherit; }
+  .lead-form input::placeholder { color: var(--ink-4); }
+  .lead-form button { flex: 0 0 auto; }
+  .lead-status { flex-basis: 100%; min-height: 20px; font-size: 13px; color: currentColor; opacity: 0.72; }
+  .lead-status.is-error { color: #fecaca; opacity: 1; }
+
+  /* ---------- Hover polish (Sian) ---------- */
+  .thumb { transition: transform var(--t-base) var(--ease), border-color var(--t-base) var(--ease), box-shadow var(--t-base) var(--ease); cursor: pointer; }
+  .thumb:not(.selected):hover { transform: translateY(-3px); border-color: var(--accent-line); box-shadow: 0 12px 32px -16px rgba(34, 197, 94, 0.2); }
+
+  .opt-chip { transition: background var(--t-fast) var(--ease), border-color var(--t-fast) var(--ease), color var(--t-fast) var(--ease); cursor: pointer; }
+  .opt-chip:not(.active):hover { background: var(--bg-soft); border-color: var(--ink-4); color: var(--ink); }
+
+  .flow-step { transition: border-color var(--t-base) var(--ease), box-shadow var(--t-base) var(--ease), transform var(--t-base) var(--ease); }
+  .flow-step:hover { border-color: var(--accent-dark); transform: translateY(-2px); box-shadow: 0 12px 24px -12px rgba(34, 197, 94, 0.18); }
+  .flow-step:hover .arrow { color: var(--accent-dark); }
+
+  .launch-row { transition: background var(--t-fast) var(--ease); }
+  .launch-row:hover { background: var(--bg-soft); }
+
+  .lock-tile { transition: background var(--t-fast) var(--ease), border-color var(--t-fast) var(--ease); }
+  .lock-tile:hover { background: #fff; border-color: var(--ink-4); }
+
+  /* ---------- Responsive ---------- */
+  @media (max-width: 960px) {
+    .container { padding: 0 20px; }
+    .section { padding: 72px 0; }
+    .section.tight { padding: 56px 0; }
+    .section.hero { padding: 56px 0 40px; }
+    .nav-inner { height: 56px; }
+    .nav-links { display: none; }
+    .h-display { font-size: 42px; letter-spacing: -0.028em; }
+    .h-section { font-size: 30px; letter-spacing: -0.022em; }
+    .sub { font-size: 16px; }
+    .section-head { margin-bottom: 36px; gap: 14px; }
+    .stat-row { grid-template-columns: repeat(2, 1fr); }
+    .stat { border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+    .stat:nth-child(2n) { border-right: 0; }
+    .stat:nth-last-child(-n+2) { border-bottom: 0; }
+    .stat .v { font-size: 28px; }
+    .faq-row { grid-template-columns: 1fr; gap: 6px; padding: 18px 12px; }
+    .footer { padding: 48px 0 64px; }
+    .footer-bottom { flex-direction: column; gap: 8px; align-items: flex-start; }
+
+    .composer { grid-template-columns: 1fr; gap: 16px; padding: 16px; margin-top: 36px; }
+    .flow { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+    .flow-step .arrow { display: none; }
+    .feature-row, .feature-row.reverse { grid-template-columns: 1fr; gap: 28px; padding: 36px 0; }
+    .feature-row.reverse .feature-copy { order: 0; }
+    .final { padding: 56px 28px; border-radius: 14px; }
+    .final h2 { font-size: 36px; }
+  }
+  @media (max-width: 560px) {
+    .h-display { font-size: 34px; }
+    .h-section { font-size: 24px; }
+    .btn-lg { height: 44px; padding: 0 18px; font-size: 14px; }
+    .hero-ctas { flex-direction: column; align-items: stretch; }
+    .hero-ctas .btn { justify-content: center; }
+    .thumbs { grid-template-columns: 1fr; }
+    .flow { grid-template-columns: 1fr; }
+    .lock-grid { grid-template-columns: 1fr; }
+    .final { padding: 48px 22px; }
+    .final h2 { font-size: 28px; }
+  }
+</style>
+</head>
+<body data-screen-label="Sian Landing">
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="container nav-inner">
+    <div class="brand"><span class="brand-mark"><img src="/assets/sian/favicon.svg" alt="" aria-hidden="true" /></span> Sian</div>
+    <div class="nav-links">
+      <a href="#flow">How it works</a>
+      <a href="#brand">Brand Lock</a>
+      <a href="#launch">Launch Check</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#templates">Templates</a>
+    </div>
+    <div class="nav-cta">
+      <a class="btn btn-primary" href="#cta">시안 만들기 <span class="arr">→</span></a>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="section hero">
+  <div class="container">
+    <div class="hero-copy" style="max-width: 880px; display: flex; flex-direction: column; gap: 22px;">
+      <span class="eyebrow"><span class="dot"></span> AI LANDING DESIGNER · v1.8</span>
+      <h1 class="h-display">
+        아이디어 하나면,<br/>
+        <span style="color: var(--ink-3);">4개의 랜딩페이지 시안이 먼저 나옵니다.</span>
+      </h1>
+      <p class="sub">
+        Sian은 제품 아이디어를 바탕으로 서로 다른 디자인 방향의 랜딩페이지 시안을 생성하고,
+        선택한 시안을 브랜드 규칙과 배포 기준에 맞춰 완성형 페이지로 제작합니다.
+      </p>
+      <div class="hero-ctas" style="display: flex; gap: 12px; margin-top: 4px;">
+        <a class="btn btn-primary btn-lg" href="#cta">내 아이디어로 시안 만들기 <span class="arr">→</span></a>
+      </div>
+      <div style="display: flex; gap: 18px; font-family: var(--font-mono); font-size: 12px; color: var(--ink-3); margin-top: 4px;">
+        <span>· 평균 생성 시간 24초</span>
+        <span>· 1-click publish</span>
+        <span>· custom domain 지원</span>
+      </div>
+    </div>
+
+    <!-- Composer -->
+    <div class="composer">
+      <div class="composer-main">
+        <div class="input-card">
+          <span class="input-label">YOUR IDEA</span>
+          <div class="input-field">
+            <span class="prefix">&gt;</span>
+            <span class="text">AI-powered meeting notes for remote teams</span>
+            <span class="cursor"></span>
+          </div>
+        </div>
+
+        <div class="thumbs-wrap">
+          <div class="thumbs-head">
+            <span class="l">GENERATED · 4 DIRECTIONS</span>
+            <span class="r">24s · click to select</span>
+          </div>
+          <div class="thumbs">
+            <div class="thumb selected">
+              <div class="thumb-bar"><span class="thumb-name">Minimal SaaS</span><span class="thumb-id">#001</span></div>
+              <div class="thumb-canvas v1">
+                <span class="h"></span>
+                <span class="s"></span>
+                <span class="s short"></span>
+                <span class="btn"></span>
+                <div class="dash"></div>
+                <span class="selected-pill">SELECTED</span>
+              </div>
+            </div>
+            <div class="thumb">
+              <div class="thumb-bar"><span class="thumb-name">Bold Gradient</span><span class="thumb-id">#002</span></div>
+              <div class="thumb-canvas v2">
+                <span class="h"></span>
+                <span class="s"></span>
+                <span class="btn"></span>
+                <div class="dash"></div>
+              </div>
+            </div>
+            <div class="thumb">
+              <div class="thumb-bar"><span class="thumb-name">Editorial Story</span><span class="thumb-id">#003</span></div>
+              <div class="thumb-canvas v3">
+                <span class="h"></span>
+                <span class="s"></span>
+                <span class="s short"></span>
+                <div class="cols"><div class="c"></div><div class="c"></div></div>
+              </div>
+            </div>
+            <div class="thumb">
+              <div class="thumb-bar"><span class="thumb-name">Product Demo</span><span class="thumb-id">#004</span></div>
+              <div class="thumb-canvas v4">
+                <span class="h"></span>
+                <span class="s"></span>
+                <div class="dash">
+                  <span class="row"></span>
+                  <span class="row short"></span>
+                  <span class="row lime"></span>
+                  <span class="row"></span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="opt-panel">
+        <div class="opt-section">
+          <span class="k">AUDIENCE</span>
+          <div class="opt-chips">
+            <span class="opt-chip active">Startup Teams</span>
+            <span class="opt-chip">Enterprise</span>
+            <span class="opt-chip">Indie</span>
+          </div>
+        </div>
+        <div class="opt-section">
+          <span class="k">TONE</span>
+          <div class="opt-chips">
+            <span class="opt-chip active">Professional</span>
+            <span class="opt-chip">Bold</span>
+            <span class="opt-chip">Minimal</span>
+            <span class="opt-chip">Emotional</span>
+          </div>
+        </div>
+        <div class="opt-section">
+          <span class="k">GOAL</span>
+          <div class="opt-chips">
+            <span class="opt-chip active">Free Trial</span>
+            <span class="opt-chip">Newsletter</span>
+            <span class="opt-chip">Demo</span>
+          </div>
+        </div>
+        <div class="opt-section">
+          <span class="k">BRAND</span>
+          <div style="display: flex; align-items: center; gap: 10px; padding: 8px 10px; background: var(--bg-soft); border: 1px solid var(--line); border-radius: 8px;">
+            <span style="width: 18px; height: 18px; border-radius: 4px; background: var(--ink);"></span>
+            <span style="font-size: 12.5px;">brand.pdf</span>
+            <span style="margin-left: auto; font-family: var(--font-mono); font-size: 10.5px; color: var(--pop-lime);">UPLOADED</span>
+          </div>
+        </div>
+        <div class="opt-build">
+          <span>Build this page</span>
+          <span class="arr">→</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FLOW -->
+<section class="section" id="flow">
+  <div class="container">
+    <div class="section-head">
+      <span class="eyebrow"><span class="dot"></span> THE FLOW</span>
+      <h2 class="h-section">5단계로 끝나는 랜딩페이지.</h2>
+      <p class="sub">Sian이 다른 도구와 다른 이유는, 바로 페이지를 만드는 게 아니라 먼저 방향성을 고르게 한다는 점입니다.</p>
+    </div>
+    <div class="flow">
+      <div class="flow-step">
+        <span class="n">STEP 01</span>
+        <h4>아이디어 입력</h4>
+        <p>한 줄로 제품을 설명. 톤·타깃·목표를 함께 선택.</p>
+        <span class="arrow">→</span>
+      </div>
+      <div class="flow-step">
+        <span class="n">STEP 02</span>
+        <h4>4개 방향 생성</h4>
+        <p>서로 다른 디자인 방향의 시안 4개. 24초 안에.</p>
+        <span class="arrow">→</span>
+      </div>
+      <div class="flow-step">
+        <span class="n">STEP 03</span>
+        <h4>시안 선택</h4>
+        <p>마음에 드는 방향을 고르거나 한 번 더 다시 생성.</p>
+        <span class="arrow">→</span>
+      </div>
+      <div class="flow-step">
+        <span class="n">STEP 04</span>
+        <h4>완성형 페이지</h4>
+        <p>Hero / Problem / Feature / Pricing / FAQ까지 자동 구성.</p>
+        <span class="arrow">→</span>
+      </div>
+      <div class="flow-step">
+        <span class="n">STEP 05</span>
+        <h4>품질 체크 · 배포</h4>
+        <p>브랜드 락 + 런치 체크 통과 후 1-click publish.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURE 1: Four directions detail -->
+<section class="section">
+  <div class="container">
+    <div class="section-head">
+      <span class="eyebrow"><span class="dot"></span> 01 · FOUR VISUAL DIRECTIONS</span>
+      <h2 class="h-section">한 아이디어, 4개의 방향성.</h2>
+      <p class="sub">바로 페이지를 만들지 않습니다. 먼저 어떤 방향이 맞는지 본 다음, 그중 하나를 진짜 페이지로 키웁니다.</p>
+    </div>
+    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px;">
+      <div style="border: 1px solid var(--line); border-radius: 12px; overflow: hidden; background: #fff;">
+        <div class="thumb-canvas v1" style="padding: 18px; aspect-ratio: auto; height: 180px;">
+          <span class="h"></span><span class="s"></span><span class="s short"></span><span class="btn"></span>
+          <div class="dash"></div>
+        </div>
+        <div style="padding: 16px; border-top: 1px solid var(--line); display: flex; flex-direction: column; gap: 4px;">
+          <span style="font-family: var(--font-mono); font-size: 10.5px; color: var(--ink-3); text-transform: uppercase;">DIRECTION 01</span>
+          <h4 style="font-size: 15px; font-weight: 500;">Minimal SaaS</h4>
+          <p style="font-size: 12px; color: var(--ink-3);">화이트 배경, 대시보드 목업, 신뢰감 중심.</p>
+        </div>
+      </div>
+      <div style="border: 1px solid var(--line); border-radius: 12px; overflow: hidden; background: #fff;">
+        <div class="thumb-canvas v2" style="padding: 18px; aspect-ratio: auto; height: 180px;">
+          <span class="h"></span><span class="s"></span><span class="btn"></span>
+          <div class="dash"></div>
+        </div>
+        <div style="padding: 16px; border-top: 1px solid var(--line); display: flex; flex-direction: column; gap: 4px;">
+          <span style="font-family: var(--font-mono); font-size: 10.5px; color: var(--ink-3); text-transform: uppercase;">DIRECTION 02</span>
+          <h4 style="font-size: 15px; font-weight: 500;">Bold Gradient</h4>
+          <p style="font-size: 12px; color: var(--ink-3);">강한 그라디언트, 큰 타이포그래피, 스타트업 느낌.</p>
+        </div>
+      </div>
+      <div style="border: 1px solid var(--line); border-radius: 12px; overflow: hidden; background: #fff;">
+        <div class="thumb-canvas v3" style="padding: 18px; aspect-ratio: auto; height: 180px;">
+          <span class="h"></span><span class="s"></span><span class="s short"></span>
+          <div class="cols"><div class="c"></div><div class="c"></div></div>
+        </div>
+        <div style="padding: 16px; border-top: 1px solid var(--line); display: flex; flex-direction: column; gap: 4px;">
+          <span style="font-family: var(--font-mono); font-size: 10.5px; color: var(--ink-3); text-transform: uppercase;">DIRECTION 03</span>
+          <h4 style="font-size: 15px; font-weight: 500;">Editorial Story</h4>
+          <p style="font-size: 12px; color: var(--ink-3);">매거진형 구성, 스토리텔링 중심.</p>
+        </div>
+      </div>
+      <div style="border: 1px solid var(--line); border-radius: 12px; overflow: hidden; background: #fff;">
+        <div class="thumb-canvas v4" style="padding: 18px; aspect-ratio: auto; height: 180px;">
+          <span class="h"></span><span class="s"></span>
+          <div class="dash">
+            <span class="row"></span>
+            <span class="row short"></span>
+            <span class="row lime"></span>
+            <span class="row"></span>
+          </div>
+        </div>
+        <div style="padding: 16px; border-top: 1px solid var(--line); display: flex; flex-direction: column; gap: 4px;">
+          <span style="font-family: var(--font-mono); font-size: 10.5px; color: var(--ink-3); text-transform: uppercase;">DIRECTION 04</span>
+          <h4 style="font-size: 15px; font-weight: 500;">Product Demo</h4>
+          <p style="font-size: 12px; color: var(--ink-3);">제품 화면과 사용 흐름을 가장 크게 보여주는 구조.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURE 2: Brand Lock + 3: Launch Check -->
+<section class="section" id="brand">
+  <div class="container">
+    <div class="feature-row" style="padding-top: 0; border-top: 0;">
+      <div class="feature-copy">
+        <span class="kicker">02 · BRAND LOCK</span>
+        <h3 class="h-card" style="font-size: 30px; letter-spacing: -0.02em;">시안을 편집해도, 브랜드는 깨지지 않습니다.</h3>
+        <p class="sub" style="font-size: 16px;">색·폰트·버튼 규칙이 고정된 상태로 편집됩니다. 카드·배지·CTA 컴포넌트도 시안과 분리되어 보호됩니다.</p>
+        <ul>
+          <li>브랜드 컬러 · 버튼 스타일 잠금</li>
+          <li>폰트 규칙 · 로고 여백 잠금</li>
+          <li>편집 중 자동 일관성 점수</li>
+        </ul>
+      </div>
+      <div class="brand-lock">
+        <div class="brand-lock-head">
+          <span class="title">Brand consistency check</span>
+          <span class="score">consistency · <b>96%</b></span>
+        </div>
+        <div class="lock-grid">
+          <div class="lock-tile">
+            <span class="k">PRIMARY</span>
+            <div class="v"><span class="swatch" style="background: #052e16;"></span>#052E16<span class="lock-ic">🔒</span></div>
+          </div>
+          <div class="lock-tile">
+            <span class="k">ACCENT</span>
+            <div class="v"><span class="swatch" style="background: #4ade80;"></span>#4ADE80<span class="lock-ic">🔒</span></div>
+          </div>
+          <div class="lock-tile">
+            <span class="k">FONT · DISPLAY</span>
+            <div class="v">Pretendard 800<span class="lock-ic">🔒</span></div>
+          </div>
+          <div class="lock-tile">
+            <span class="k">RADIUS</span>
+            <div class="v">10px<span class="lock-ic">🔒</span></div>
+          </div>
+        </div>
+        <div class="lock-warn">
+          <span class="ic">!</span>
+          <span>2 components need review · Button hover state, badge contrast</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="feature-row reverse" id="launch">
+      <div class="feature-copy">
+        <span class="kicker">03 · LAUNCH CHECK</span>
+        <h3 class="h-card" style="font-size: 30px; letter-spacing: -0.02em;">배포 전, 한 번 더 자동 점검합니다.</h3>
+        <p class="sub" style="font-size: 16px;">모바일 깨짐, SEO, CTA 대비, 접근성, 이미지 용량, 로딩 속도, 폼 연결까지 자동으로 확인합니다.</p>
+        <ul>
+          <li>모바일 반응형 · SEO 메타 · 접근성</li>
+          <li>이미지 용량 · 로딩 속도 측정</li>
+          <li>폼 연결 상태 · CTA 클릭 가능성</li>
+        </ul>
+      </div>
+      <div class="launch">
+        <div class="launch-head">
+          <span class="title">Launch Check · sian.design/lp/draft-014</span>
+          <span class="running"><span class="dot"></span>completed · 8.2s</span>
+        </div>
+        <div class="launch-row">
+          <span class="status ok">✓</span>
+          <span class="label">Mobile responsive</span>
+          <span class="meta">Passed · 7 breakpoints</span>
+        </div>
+        <div class="launch-row">
+          <span class="status warn">!</span>
+          <span class="label">SEO metadata</span>
+          <span class="meta">2 suggestions</span>
+        </div>
+        <div class="launch-row">
+          <span class="status ok">✓</span>
+          <span class="label">CTA contrast ratio</span>
+          <span class="meta">AAA · 13.4:1</span>
+        </div>
+        <div class="launch-row">
+          <span class="status warn">!</span>
+          <span class="label">Accessibility</span>
+          <span class="meta">1 warning · alt text</span>
+        </div>
+        <div class="launch-row">
+          <span class="status ok">✓</span>
+          <span class="label">Image optimization</span>
+          <span class="meta">142 KB total</span>
+        </div>
+        <div class="launch-row">
+          <span class="status ok">✓</span>
+          <span class="label">Performance</span>
+          <span class="meta">89 / 100</span>
+        </div>
+        <div class="launch-row">
+          <span class="status ok">✓</span>
+          <span class="label">Form connection</span>
+          <span class="meta">Supabase · live</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<section class="section tight">
+  <div class="container">
+    <div class="section-head" style="margin-bottom: 32px;">
+      <span class="eyebrow"><span class="dot"></span> NUMBERS</span>
+    </div>
+    <div class="stat-row">
+      <div class="stat"><div class="v">24s</div><div class="l">avg. generation</div></div>
+      <div class="stat"><div class="v">4</div><div class="l">directions per idea</div></div>
+      <div class="stat"><div class="v">96%</div><div class="l">brand consistency</div></div>
+      <div class="stat"><div class="v">1-click</div><div class="l">publish</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="section">
+  <div class="container">
+    <div class="section-head">
+      <span class="eyebrow"><span class="dot"></span> FAQ</span>
+      <h2 class="h-section">자주 묻는 질문</h2>
+    </div>
+    <div class="faq">
+      <div class="faq-row">
+        <div class="faq-q">생성된 시안을 편집할 수 있나요?</div>
+        <div class="faq-a">네. 섹션 단위로 카피·이미지·레이아웃을 자유롭게 편집할 수 있고, Brand Lock 안에서 일관성이 유지됩니다.</div>
+      </div>
+      <div class="faq-row">
+        <div class="faq-q">기존 도메인에 연결할 수 있나요?</div>
+        <div class="faq-a">Custom domain을 무료 플랜부터 지원합니다. CNAME 한 줄 설정으로 5분 안에 끝납니다.</div>
+      </div>
+      <div class="faq-row">
+        <div class="faq-q">코드로 export할 수 있나요?</div>
+        <div class="faq-a">Pro 플랜에서 Next.js · React · 정적 HTML로 export 가능합니다.</div>
+      </div>
+      <div class="faq-row">
+        <div class="faq-q">한국어로도 시안이 나오나요?</div>
+        <div class="faq-a">한국어 · 영어 · 일본어 카피를 동등하게 지원합니다. 톤과 어휘는 업종에 따라 자동 조정됩니다.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FINAL -->
+<section class="section" id="cta" style="border-bottom: 0;">
+  <div class="container">
+    <div class="final">
+      <span class="eyebrow"><span class="dot"></span> READY TO GENERATE</span>
+      <h2>좋은 첫 시안이<br/>좋은 페이지를 만듭니다.</h2>
+      <p>아이디어 한 줄로 시작. 24초 뒤에 4개의 방향이 도착합니다.</p>
+      <form class="lead-form" data-lead-form data-service="sian" data-language="ko" data-cta-id="final">
+        <input type="email" name="email" placeholder="업무용 이메일" autocomplete="email" aria-label="업무용 이메일" required />
+        <button class="btn btn-primary btn-lg" type="submit">내 아이디어로 시안 만들기 <span class="arr">→</span></button>
+        <p class="lead-status" role="status" aria-live="polite"></p>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="container footer">
+  <div class="footer-row">
+    <div class="footer-col" style="max-width: 280px;">
+      <div class="brand"><span class="brand-mark"><img src="/assets/sian/favicon.svg" alt="" aria-hidden="true" /></span> Sian</div>
+      <p style="margin-top: 8px;">아이디어 한 줄로, 4개의 시안에서 시작하는 랜딩페이지 생성 도구.</p>
+    </div>
+    <div class="footer-col">
+      <h5>Product</h5>
+      <a>Four Directions</a><a>Brand Lock</a><a>Launch Check</a><a>Templates</a>
+    </div>
+    <div class="footer-col">
+      <h5>Company</h5>
+      <a>About</a><a>Careers</a><a>Blog</a><a>Contact</a>
+    </div>
+    <div class="footer-col">
+      <h5>Resources</h5>
+      <a>Docs</a><a>Changelog</a><a>Privacy</a><a>Security</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 Sian Labs.</span>
+    <span>build · 2026.05.28</span>
+  </div>
+</footer>
+
+<script src="https://unpkg.com/landom-sdk/dist/landom-sdk.umd.js" defer></script>
+<script src="/assets/landom-sdk-init.js" defer></script>
+<script src="/assets/lead-capture.js" defer></script>
+</body>
+</html>

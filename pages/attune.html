@@ -1,0 +1,865 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Attune — 고객 행동을 읽어 맞춤 세일즈 이메일을 보내는 AI</title>
+<link rel="icon" type="image/svg+xml" href="/assets/attune/favicon.svg" />
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+<script src="/assets/meta-pixel.js" defer></script>
+<style id="shared-css">
+/* ---------- Shared design system: Korean D2C tone (Pretendard, teal+amber) ---------- */
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+:where(:root) {
+  --ease: cubic-bezier(0.4, 0.0, 0.2, 1);
+  --ease-out: cubic-bezier(0.0, 0.0, 0.2, 1);
+  --t-fast: 120ms;
+  --t-base: 180ms;
+  --t-slow: 260ms;
+}
+
+@keyframes pageIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+body { animation: pageIn 380ms var(--ease-out) both; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; scroll-behavior: auto !important; }
+}
+
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 6px; }
+html { scroll-behavior: smooth; }
+
+:root {
+  /* Type */
+  --font-sans: 'Pretendard Variable', 'Pretendard', 'Noto Sans KR', system-ui, -apple-system, "Helvetica Neue", sans-serif;
+  --font-mono: 'SFMono-Regular', Consolas, 'JetBrains Mono', ui-monospace, Menlo, monospace;
+
+  /* Neutral palette - Korean commerce */
+  --bg: #f4f7f8;
+  --bg-soft: #edf7f5;
+  --bg-sunken: #e9f1f3;
+  --panel: #ffffff;
+  --line: #d3dde2;
+  --line-strong: #b8c8ce;
+  --ink: #0b1f2a;
+  --ink-2: #111827;
+  --ink-3: #5f6b76;
+  --ink-4: #7b8791;
+
+  /* Default accent (overridden per product) */
+  --accent: #0f766e;
+  --accent-dark: #115e59;
+  --accent-soft: #e7f7f3;
+  --accent-line: #99f6e4;
+  --accent-ink: #ffffff;
+  --warm: #f59e0b;
+  --warm-soft: #fff7ed;
+  --warm-ink: #c2410c;
+
+  /* Layout */
+  --container: 1180px;
+  --radius: 8px;
+  --radius-lg: 8px;
+  --shadow: 0 18px 50px rgba(15, 23, 42, 0.10);
+  --shadow-card: 0 8px 26px rgba(15, 23, 42, 0.07);
+}
+
+html, body {
+  background: linear-gradient(180deg, #e9f1f3 0%, #f8fafc 38%, #f4f7f8 100%);
+  color: var(--ink-2);
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.6;
+  letter-spacing: 0;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+a { color: inherit; text-decoration: none; }
+button { font-family: inherit; cursor: pointer; border: 0; background: none; }
+img, svg { display: block; max-width: 100%; }
+
+.container { width: min(var(--container), calc(100% - 32px)); margin: 0 auto; }
+.section { padding: 78px 0; border-bottom: 1px solid var(--line); }
+.section.tight { padding: 56px 0; }
+.section.hero { padding: 64px 0 48px; }
+
+/* Nav */
+.nav {
+  position: sticky; top: 0; z-index: 50;
+  background: rgba(255,255,255,0.9);
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid rgba(211, 221, 226, 0.86);
+}
+.nav-inner { display: flex; align-items: center; justify-content: space-between; height: 72px; gap: 20px; }
+.brand { display: flex; align-items: center; gap: 12px; font-weight: 800; font-size: 16px; color: var(--ink); }
+.brand-mark { width: 40px; height: 40px; border-radius: 10px; background: #fff; border: 1px solid var(--line); display: inline-grid; place-items: center; transition: transform var(--t-base) var(--ease); box-shadow: 0 8px 20px rgba(15, 23, 42, 0.06); }
+.brand-mark img { width: 24px; height: 24px; display: block; object-fit: contain; }
+.brand:hover .brand-mark { transform: rotate(-6deg) scale(1.06); }
+.nav-links { display: flex; gap: 4px; font-size: 14px; flex-wrap: wrap; justify-content: center; }
+.nav-links a { padding: 8px 12px; border-radius: 8px; color: #374151; font-weight: 700; transition: all var(--t-fast) var(--ease); }
+.nav-links a:hover { background: var(--accent-soft); color: var(--accent-dark); }
+.nav-cta { display: flex; gap: 10px; align-items: center; }
+
+/* Buttons */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  min-height: 42px; padding: 10px 16px;
+  border: 1px solid #9ca3af; border-radius: 8px;
+  background: #fff; color: #111827;
+  font-family: inherit; font-size: 14px; font-weight: 800;
+  cursor: pointer; white-space: nowrap;
+  transition: transform var(--t-fast) var(--ease), background var(--t-fast) var(--ease), border-color var(--t-fast) var(--ease), color var(--t-fast) var(--ease);
+}
+.btn:hover { transform: translateY(-1px); border-color: #4b5563; }
+.btn:active { transform: translateY(0); }
+.btn-primary { border-color: var(--accent); background: var(--accent); color: #fff; }
+.btn-primary:hover { border-color: var(--accent-dark); background: var(--accent-dark); }
+.btn-primary .arr { transition: transform var(--t-base) var(--ease); }
+.btn-primary:hover .arr { transform: translateX(3px); }
+.btn-outline { border-color: #b8c8ce; background: rgba(255, 255, 255, 0.76); color: var(--ink); }
+.btn-outline:hover { background: #fff; border-color: var(--ink-3); }
+.btn-outline .arr { transition: transform var(--t-base) var(--ease); }
+.btn-outline:hover .arr { transform: translateX(3px); }
+.btn-lg { min-height: 50px; padding: 12px 22px; font-size: 16px; }
+.btn .arr { font-family: var(--font-mono); font-size: 14px; opacity: .9; }
+
+/* Type */
+.eyebrow {
+  display: inline-flex; align-items: center; gap: 8px;
+  color: var(--accent-dark); font-size: 13px; font-weight: 900;
+  text-transform: uppercase; letter-spacing: 0.04em;
+}
+.eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
+
+.h-display {
+  font-size: clamp(40px, 6vw, 72px); line-height: 1.04; letter-spacing: -0.012em; font-weight: 900;
+  color: var(--ink); text-wrap: balance;
+}
+.h-section {
+  font-size: clamp(28px, 3.6vw, 44px); line-height: 1.1; letter-spacing: -0.008em; font-weight: 900;
+  color: var(--ink); text-wrap: balance; max-width: 780px;
+}
+.h-card { font-size: 20px; line-height: 1.3; font-weight: 800; color: var(--ink); }
+.sub {
+  font-size: 18px; line-height: 1.7; color: var(--ink-3); max-width: 660px; text-wrap: pretty;
+  font-weight: 500;
+}
+.kicker {
+  font-family: var(--font-sans); font-size: 13px; letter-spacing: 0.04em;
+  color: var(--accent-dark); text-transform: uppercase; font-weight: 900;
+}
+
+.section-head { display: flex; flex-direction: column; gap: 14px; margin-bottom: 34px; max-width: 780px; }
+
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+
+/* Cards */
+.card {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 22px;
+  display: flex; flex-direction: column; gap: 12px;
+  box-shadow: var(--shadow-card);
+  transition: border-color var(--t-base) var(--ease), transform var(--t-base) var(--ease), box-shadow var(--t-base) var(--ease);
+}
+.card:hover { border-color: var(--accent); transform: translateY(-2px); box-shadow: 0 16px 36px rgba(15, 23, 42, 0.10); }
+.card .num { font-size: 12px; color: var(--ink-4); font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; }
+.card p { color: var(--ink-3); font-size: 15px; line-height: 1.65; font-weight: 500; }
+
+.card-soft { background: var(--bg-soft); border: 1px solid var(--line); }
+.card-soft:hover { background: #fff; }
+
+/* Placeholder */
+.ph {
+  position: relative;
+  background:
+    repeating-linear-gradient(135deg, rgba(15,23,42,0.04) 0 1px, transparent 1px 8px),
+    var(--bg-soft);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--ink-3);
+  font-size: 13px; font-weight: 700;
+}
+.ph::after {
+  content: ""; position: absolute; inset: 0;
+  background: linear-gradient(180deg, rgba(255,255,255,0) 60%, rgba(255,255,255,0.9));
+  pointer-events: none; border-radius: inherit;
+}
+.ph > span { position: relative; z-index: 1; padding: 4px 10px; background: rgba(255,255,255,0.92); border-radius: 6px; border: 1px solid var(--line); }
+
+/* Tag/chip */
+.tag {
+  display: inline-flex; align-items: center; gap: 6px;
+  height: 26px; padding: 0 11px; border-radius: 999px;
+  font-size: 12px; font-weight: 800;
+  background: var(--accent-soft); color: var(--accent-dark); border: 1px solid var(--accent-line);
+  transition: all var(--t-fast) var(--ease);
+}
+.tag:hover { filter: brightness(0.98); }
+.tag.solid { background: var(--accent); color: #fff; border-color: var(--accent); }
+
+/* Stat row */
+.stat-row { display: grid; grid-template-columns: repeat(4, 1fr); border-top: 1px solid var(--line); background: #fff; border-radius: 8px; overflow: hidden; box-shadow: var(--shadow-card); }
+.stat { padding: 24px 18px; border-right: 1px solid var(--line); transition: background var(--t-base) var(--ease); }
+.stat:hover { background: var(--bg-soft); }
+.stat:last-child { border-right: 0; }
+.stat .v { font-size: 30px; font-weight: 900; color: var(--ink); letter-spacing: -0.01em; }
+.stat .l { font-size: 13px; color: var(--ink-3); margin-top: 4px; font-weight: 700; }
+
+/* FAQ */
+.faq { border-top: 1px solid var(--line); }
+.faq-row {
+  padding: 22px 16px; border-bottom: 1px solid var(--line);
+  display: grid; grid-template-columns: 1fr 2fr; gap: 28px; align-items: start;
+  border-radius: 8px;
+  transition: background var(--t-base) var(--ease);
+}
+.faq-row:hover { background: var(--accent-soft); }
+.faq-q { font-size: 17px; font-weight: 800; color: var(--ink); transition: color var(--t-fast) var(--ease); }
+.faq-row:hover .faq-q { color: var(--accent-dark); }
+.faq-a { font-size: 15px; color: var(--ink-3); line-height: 1.7; font-weight: 500; }
+
+/* Footer */
+.footer { padding: 56px 0 64px; background: rgba(255,255,255,0.5); border-top: 1px solid var(--line); }
+.footer-row { display: flex; justify-content: space-between; gap: 36px; flex-wrap: wrap; }
+.footer-col { display: flex; flex-direction: column; gap: 8px; font-size: 13px; color: var(--ink-3); font-weight: 600; }
+.footer-col h5 { font-size: 12px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--ink-4); margin-bottom: 6px; font-weight: 900; }
+.footer-col a { display: block; }
+.footer-col a:hover { color: var(--accent-dark); }
+.footer-bottom { margin-top: 40px; padding-top: 24px; border-top: 1px solid var(--line); display: flex; justify-content: space-between; align-items: center; font-size: 12px; color: var(--ink-4); font-weight: 700; }
+
+/* Helpers */
+.row { display: flex; align-items: center; gap: 12px; }
+.col { display: flex; flex-direction: column; gap: 12px; }
+.center { text-align: center; }
+.muted { color: var(--ink-3); }
+.mono { font-family: var(--font-mono); }
+.divider { height: 1px; background: var(--line); width: 100%; }
+
+.dotgrid {
+  background-image: radial-gradient(circle at 1px 1px, rgba(11,31,42,0.06) 1px, transparent 0);
+  background-size: 22px 22px;
+}
+
+/* Responsive (shared) */
+@media (max-width: 960px) {
+  .section { padding: 56px 0; }
+  .section.tight { padding: 40px 0; }
+  .section.hero { padding: 48px 0 32px; }
+  .nav-inner { height: 60px; }
+  .nav-links { display: none; }
+  .section-head { margin-bottom: 28px; gap: 10px; }
+  .stat-row { grid-template-columns: repeat(2, 1fr); }
+  .stat { border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+  .stat:nth-child(2n) { border-right: 0; }
+  .stat:nth-last-child(-n+2) { border-bottom: 0; }
+  .stat .v { font-size: 24px; }
+  .faq-row { grid-template-columns: 1fr; gap: 6px; padding: 16px 12px; }
+  .footer { padding: 40px 0 48px; }
+  .footer-bottom { flex-direction: column; gap: 8px; align-items: flex-start; }
+}
+@media (max-width: 560px) {
+  .btn-lg { min-height: 44px; padding: 10px 18px; font-size: 14px; }
+}
+</style>
+<style>
+  :root {
+    --bg: #f8fafc;
+    --bg-soft: #f1f5f9;
+    --bg-sunken: #e2e8f0;
+    --line: #cbd5e1;
+    --line-strong: #94a3b8;
+    --accent: #1e293b;
+    --accent-dark: #0f172a;
+    --accent-2: #334155;
+    --mint: #38bdf8;
+    --accent-soft: #f1f5f9;
+    --accent-ink: #ffffff;
+    --accent-line: #cbd5e1;
+  }
+  body {
+    background: linear-gradient(180deg, #e2e8f0 0%, #f8fafc 42%, #f1f5f9 100%);
+  }
+  .h-display em { font-style: normal; color: var(--ink-3); }
+
+  /* Hero demo: lead profile + email composer */
+  .demo {
+    margin-top: 56px;
+    background: var(--bg-soft);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 22px;
+    display: grid;
+    grid-template-columns: 0.85fr 1.2fr;
+    gap: 22px;
+    box-shadow: 0 30px 60px -30px rgba(30, 41, 59, 0.24);
+  }
+
+  /* Lead profile card */
+  .lead {
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 22px;
+    display: flex; flex-direction: column; gap: 18px;
+  }
+  .lead-head { display: flex; align-items: center; gap: 14px; }
+  .lead-avatar {
+    width: 48px; height: 48px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent), var(--mint));
+    color: #fff; display: flex; align-items: center; justify-content: center;
+    font-family: var(--font-mono); font-weight: 600; font-size: 16px;
+  }
+  .lead-name { font-size: 16px; font-weight: 500; letter-spacing: -0.01em; }
+  .lead-co { font-size: 12.5px; color: var(--ink-3); font-family: var(--font-mono); margin-top: 2px; }
+
+  .lead-row { display: grid; grid-template-columns: 110px 1fr; gap: 10px; font-size: 13px; }
+  .lead-row .k { color: var(--ink-3); font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; padding-top: 2px; }
+  .lead-row .v { color: var(--ink); }
+
+  .visited { display: flex; flex-wrap: wrap; gap: 6px; }
+  .visited .chip { font-family: var(--font-mono); font-size: 11px; padding: 3px 8px; border-radius: 100px; background: var(--accent-soft); color: var(--accent); border: 1px solid var(--accent-line); }
+
+  .intent-bar { display: flex; flex-direction: column; gap: 6px; }
+  .intent-bar .top { display: flex; justify-content: space-between; font-size: 12px; }
+  .intent-bar .top .l { color: var(--ink-3); font-family: var(--font-mono); }
+  .intent-bar .top .v { color: var(--accent); font-weight: 500; font-family: var(--font-mono); }
+  .intent-bar .track { height: 6px; background: var(--accent-soft); border-radius: 100px; overflow: hidden; }
+  .intent-bar .fill { height: 100%; width: 87%; background: linear-gradient(90deg, var(--accent), #64748b); border-radius: 100px; }
+
+  .concern {
+    padding: 12px 14px; border-radius: 8px;
+    background: #fff7ed; border: 1px solid #fed7aa;
+    display: flex; flex-direction: column; gap: 4px;
+  }
+  .concern .k { font-family: var(--font-mono); font-size: 10px; color: #c2410c; text-transform: uppercase; letter-spacing: 0.06em; }
+  .concern .v { font-size: 13px; color: #7c2d12; }
+
+  /* Email composer */
+  .email {
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    display: flex; flex-direction: column;
+    overflow: hidden;
+  }
+  .email-tabs { display: flex; border-bottom: 1px solid var(--line); padding: 0 14px; gap: 4px; }
+  .email-tab { padding: 12px 12px; font-family: var(--font-mono); font-size: 11.5px; color: var(--ink-3); border-bottom: 1.5px solid transparent; }
+  .email-tab.active { color: var(--ink); border-bottom-color: var(--accent); }
+  .email-body { padding: 18px 18px 20px; display: flex; flex-direction: column; gap: 14px; }
+  .email-meta { display: grid; grid-template-columns: 70px 1fr; gap: 8px 14px; font-size: 12.5px; align-items: center; }
+  .email-meta .k { color: var(--ink-4); font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; }
+  .email-meta .v { color: var(--ink-2); }
+  .subject-opts { display: flex; flex-direction: column; gap: 6px; padding: 12px; background: var(--bg-soft); border: 1px solid var(--line); border-radius: 8px; }
+  .subject-opts .lbl { font-family: var(--font-mono); font-size: 10px; color: var(--ink-4); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 2px; }
+  .subject-opts .opt { display: flex; align-items: center; gap: 10px; font-size: 13px; padding: 6px 8px; border-radius: 6px; }
+  .subject-opts .opt.active { background: #fff; border: 1px solid var(--accent-line); }
+  .subject-opts .opt .num { font-family: var(--font-mono); font-size: 11px; color: var(--ink-4); width: 16px; }
+  .subject-opts .opt .check { width: 16px; height: 16px; border-radius: 50%; border: 1.5px solid var(--line-strong); flex-shrink: 0; }
+  .subject-opts .opt.active .check { border-color: var(--accent); background: var(--accent); position: relative; }
+  .subject-opts .opt.active .check::after { content: "✓"; color: #fff; font-size: 10px; position: absolute; top: -1px; left: 3px; }
+
+  .email-body-text {
+    padding: 14px;
+    background: var(--bg-soft);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    font-size: 13px;
+    color: var(--ink-2);
+    line-height: 1.65;
+    position: relative;
+  }
+  .email-body-text .gen-tag {
+    position: absolute; top: -10px; right: 14px;
+    font-family: var(--font-mono); font-size: 10px;
+    background: var(--accent); color: #fff;
+    padding: 3px 8px; border-radius: 100px;
+  }
+  .typing-cursor { display: inline-block; width: 2px; height: 14px; background: var(--accent); vertical-align: -2px; animation: blink 1s infinite; }
+  @keyframes blink { 0%, 50% { opacity: 1; } 51%, 100% { opacity: 0; } }
+
+  .email-actions { display: flex; justify-content: space-between; align-items: center; }
+  .email-actions .mono { font-size: 11px; color: var(--ink-4); }
+
+  /* Three core features */
+  .features-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 48px; }
+  .feat {
+    border: 1px solid var(--line); border-radius: 14px; padding: 28px;
+    display: flex; flex-direction: column; gap: 14px;
+    background: #fff;
+  }
+  .feat .ic {
+    width: 36px; height: 36px; border-radius: 8px;
+    background: var(--accent-soft); color: var(--accent);
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--font-mono); font-size: 14px; font-weight: 600;
+  }
+  .feat h3 { font-size: 19px; letter-spacing: -0.015em; font-weight: 500; }
+  .feat p { font-size: 14px; color: var(--ink-3); line-height: 1.55; }
+  .feat .list { display: flex; flex-direction: column; gap: 8px; padding-top: 8px; border-top: 1px solid var(--line); margin-top: 4px; }
+  .feat .list .row { display: flex; gap: 10px; align-items: center; font-size: 12.5px; }
+  .feat .list .row .tag { background: var(--bg-soft); }
+
+  /* Intent signals row */
+  .signals { display: grid; grid-template-columns: 0.9fr 1.1fr; gap: 36px; align-items: center; margin-top: 24px; }
+  .signal-rows { display: flex; flex-direction: column; gap: 10px; }
+  .signal-row {
+    display: grid; grid-template-columns: 1fr auto; gap: 16px;
+    padding: 14px 16px; border: 1px solid var(--line); border-radius: 10px;
+    background: #fff;
+    align-items: center;
+  }
+  .signal-row .sl { display: flex; flex-direction: column; gap: 4px; }
+  .signal-row .sig { font-size: 14px; color: var(--ink); }
+  .signal-row .infer { font-size: 12px; color: var(--ink-3); font-family: var(--font-mono); }
+  .signal-row .sr { font-family: var(--font-mono); font-size: 11px; color: var(--accent); background: var(--accent-soft); padding: 4px 8px; border-radius: 100px; border: 1px solid var(--accent-line); }
+
+  /* Follow-up tree */
+  .followup { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 16px; }
+  .fu-node {
+    padding: 16px 18px; border: 1px solid var(--line); border-radius: 10px; background: #fff;
+    display: flex; flex-direction: column; gap: 6px;
+  }
+  .fu-node .trig { font-family: var(--font-mono); font-size: 11px; color: var(--ink-3); text-transform: uppercase; letter-spacing: 0.05em; }
+  .fu-node .act { font-size: 14px; color: var(--ink); }
+  .fu-node.alt { background: var(--accent-soft); border-color: var(--accent-line); }
+  .fu-node.alt .trig { color: var(--accent); }
+
+  /* Final */
+  .final {
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 62%, #334155 100%);
+    color: #fff; border-radius: 18px; padding: 80px 64px;
+    position: relative; overflow: hidden;
+    display: flex; flex-direction: column; gap: 20px; align-items: flex-start;
+  }
+  .final::before {
+    content: ""; position: absolute; inset: 0;
+    background: radial-gradient(700px 400px at 100% 0%, rgba(56, 189, 248, 0.24), transparent 60%);
+    pointer-events: none;
+  }
+  .final > * { position: relative; }
+  .final .eyebrow { color: #bae6fd; }
+  .final .eyebrow .dot { background: var(--mint); }
+  .final h2 { font-size: 52px; line-height: 1.05; letter-spacing: -0.03em; font-weight: 500; max-width: 760px; text-wrap: balance; }
+  .final p { color: #e2e8f0; font-size: 17px; max-width: 540px; }
+  .final .btn-primary { background: #fff; color: #1e293b; }
+  .final .btn-outline { background: transparent; border-color: rgba(255,255,255,0.25); color: #fff; }
+  .lead-form { display: flex; flex-wrap: wrap; gap: 10px; align-items: flex-start; width: min(100%, 720px); margin-top: 6px; }
+  .lead-form input { height: 48px; flex: 1 1 280px; min-width: 0; border: 1px solid rgba(255,255,255,0.24); border-radius: 8px; padding: 0 16px; background: rgba(255,255,255,0.94); color: var(--ink); font: inherit; }
+  .lead-form input::placeholder { color: var(--ink-4); }
+  .lead-form button { flex: 0 0 auto; }
+  .lead-status { flex-basis: 100%; min-height: 20px; font-size: 13px; color: currentColor; opacity: 0.72; }
+  .lead-status.is-error { color: #fecaca; opacity: 1; }
+
+  /* ---------- Hover polish (Attune) ---------- */
+  .feat { transition: transform var(--t-base) var(--ease), border-color var(--t-base) var(--ease), box-shadow var(--t-base) var(--ease); }
+  .feat:hover { transform: translateY(-3px); border-color: var(--accent); box-shadow: 0 16px 40px -16px rgba(30, 41, 59, 0.18); }
+  .feat:hover .ic { background: var(--accent); color: #fff; }
+
+  .signal-row { transition: background var(--t-base) var(--ease), border-color var(--t-base) var(--ease), transform var(--t-base) var(--ease); cursor: pointer; }
+  .signal-row:hover { background: var(--accent-soft); border-color: var(--accent-line); transform: translateX(2px); }
+
+  .fu-node { transition: transform var(--t-base) var(--ease), border-color var(--t-base) var(--ease); }
+  .fu-node:hover { transform: translateY(-2px); border-color: var(--accent); }
+
+  .subject-opts .opt { transition: background var(--t-fast) var(--ease); cursor: pointer; }
+  .subject-opts .opt:hover:not(.active) { background: rgba(255,255,255,0.6); }
+
+  .email-tab { cursor: pointer; transition: color var(--t-fast) var(--ease); }
+  .email-tab:not(.active):hover { color: var(--ink); }
+
+  .chip { transition: transform var(--t-fast) var(--ease); }
+  .visited .chip:hover { transform: translateY(-1px); }
+
+  /* ---------- Responsive ---------- */
+  @media (max-width: 960px) {
+    .container { padding: 0 20px; }
+    .section { padding: 72px 0; }
+    .section.tight { padding: 56px 0; }
+    .section.hero { padding: 56px 0 40px; }
+    .nav-inner { height: 56px; }
+    .nav-links { display: none; }
+    .h-display { font-size: 42px; letter-spacing: -0.028em; }
+    .h-section { font-size: 30px; letter-spacing: -0.022em; }
+    .sub { font-size: 16px; }
+    .section-head { margin-bottom: 36px; gap: 14px; }
+    .stat-row { grid-template-columns: repeat(2, 1fr); }
+    .stat { border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+    .stat:nth-child(2n) { border-right: 0; }
+    .stat:nth-last-child(-n+2) { border-bottom: 0; }
+    .stat .v { font-size: 28px; }
+    .faq-row { grid-template-columns: 1fr; gap: 6px; padding: 18px 12px; }
+    .footer { padding: 48px 0 64px; }
+    .footer-bottom { flex-direction: column; gap: 8px; align-items: flex-start; }
+    .grid-4 { grid-template-columns: repeat(2, 1fr); gap: 14px; }
+
+    .demo { grid-template-columns: 1fr; gap: 16px; margin-top: 36px; padding: 16px; }
+    .features-grid { grid-template-columns: 1fr; gap: 14px; margin-top: 32px; }
+    .followup { grid-template-columns: 1fr; }
+    .signals { grid-template-columns: 1fr; gap: 24px; }
+    .final { padding: 56px 28px; border-radius: 14px; }
+    .final h2 { font-size: 36px; }
+  }
+  @media (max-width: 560px) {
+    .h-display { font-size: 34px; }
+    .h-section { font-size: 24px; }
+    .btn-lg { height: 44px; padding: 0 18px; font-size: 14px; }
+    .hero-ctas { flex-direction: column; align-items: stretch; }
+    .hero-ctas .btn { justify-content: center; }
+    .grid-4 { grid-template-columns: 1fr; }
+    .lead, .email-body { padding: 16px; }
+    .lead-row { grid-template-columns: 88px 1fr; gap: 6px; }
+    .email-tabs { overflow-x: auto; }
+    .final { padding: 48px 22px; }
+    .final h2 { font-size: 28px; }
+  }
+</style>
+</head>
+<body data-screen-label="Attune Landing">
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="container nav-inner">
+    <div class="brand"><span class="brand-mark"><img src="/assets/attune/favicon.svg" alt="" aria-hidden="true" /></span> Attune</div>
+    <div class="nav-links">
+      <a href="#features">Features</a>
+      <a href="#signals">Intent Signals</a>
+      <a href="#how">How it works</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#blog">Blog</a>
+    </div>
+    <div class="nav-cta">
+      <a class="btn btn-primary" href="#cta">14일 무료 체험 <span class="arr">→</span></a>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="section hero">
+  <div class="container">
+    <div class="hero-copy" style="max-width: 880px; display: flex; flex-direction: column; gap: 22px;">
+      <span class="eyebrow"><span class="dot"></span> SALES MESSAGING AI · LLM-NATIVE</span>
+      <h1 class="h-display">
+        모든 리드에게 같은 이메일을<br/>보내지 마세요.
+      </h1>
+      <p class="sub">
+        Attune은 사용자의 방문 페이지, 클릭 패턴, 관심 섹션, 폼 응답, 이전 반응을 분석해
+        LLM이 각 고객에게 가장 자연스러운 이메일을 자동으로 작성하고 발송합니다.
+      </p>
+      <div class="hero-ctas" style="display: flex; gap: 12px; margin-top: 4px;">
+        <a class="btn btn-primary btn-lg" href="#cta">AI 이메일 시퀀스 만들기 <span class="arr">→</span></a>
+      </div>
+      <div class="hero-meta" style="display: flex; gap: 16px; font-family: var(--font-mono); font-size: 12px; color: var(--ink-3); margin-top: 4px;">
+        <span>· 기존 CRM 그대로 사용</span>
+        <span>· HubSpot · Salesforce · Pipedrive 연동</span>
+        <span>· GDPR 준수</span>
+      </div>
+    </div>
+
+    <!-- Demo: Lead profile + Email composer -->
+    <div class="demo">
+      <div class="lead">
+        <div class="lead-head">
+          <div class="lead-avatar">JK</div>
+          <div>
+            <div class="lead-name">Jamie Kim</div>
+            <div class="lead-co">B2B SaaS Startup · Series A</div>
+          </div>
+        </div>
+
+        <div class="lead-row"><span class="k">VISITED</span>
+          <span class="v"><div class="visited">
+            <span class="chip">Pricing × 3</span>
+            <span class="chip">Security</span>
+            <span class="chip">Case Study</span>
+            <span class="chip">Demo</span>
+          </div></span>
+        </div>
+        <div class="lead-row"><span class="k">LAST OPEN</span><span class="v">2 hours ago · Pricing page</span></div>
+        <div class="lead-row"><span class="k">RESPONSE</span><span class="v">Opened, no click (2 emails)</span></div>
+
+        <div class="intent-bar">
+          <div class="top"><span class="l">INTENT SCORE</span><span class="v">87 / 100</span></div>
+          <div class="track"><div class="fill"></div></div>
+        </div>
+
+        <div class="concern">
+          <span class="k">DETECTED CONCERN</span>
+          <span class="v">Implementation risk · "도입이 어렵지 않을까?"</span>
+        </div>
+        <div style="font-family: var(--font-mono); font-size: 11px; color: var(--ink-3);">RECOMMENDED ANGLE → Fast onboarding + customer proof</div>
+      </div>
+
+      <div class="email">
+        <div class="email-tabs">
+          <div class="email-tab active">Compose</div>
+          <div class="email-tab">Variants (3)</div>
+          <div class="email-tab">Follow-up flow</div>
+          <div style="margin-left: auto; font-family: var(--font-mono); font-size: 10px; color: var(--ink-4); padding: 12px 0;">model: claude-opus · ko</div>
+        </div>
+        <div class="email-body">
+          <div class="email-meta">
+            <span class="k">FROM</span><span class="v">민지 — Attune</span>
+            <span class="k">TO</span><span class="v">Jamie Kim · jamie@northwind.co</span>
+          </div>
+
+          <div class="subject-opts">
+            <span class="lbl">SUBJECT · 3 OPTIONS GENERATED</span>
+            <div class="opt active">
+              <span class="num">1</span><span class="check"></span>
+              <span>도입 리스크를 줄이는 2주 온보딩 플랜</span>
+            </div>
+            <div class="opt">
+              <span class="num">2</span><span class="check"></span>
+              <span>비슷한 SaaS 팀이 전환한 방식</span>
+            </div>
+            <div class="opt">
+              <span class="num">3</span><span class="check"></span>
+              <span>기능보다 먼저 확인해야 할 운영 비용</span>
+            </div>
+          </div>
+
+          <div class="email-body-text">
+            <span class="gen-tag">GENERATED · 0.8s</span>
+            안녕하세요 Jamie님,<br/><br/>
+            가격 페이지를 여러 번 확인하신 것 같아, 도입 비용보다 먼저 회수 기간을 계산해볼 수 있는 자료를 보내드립니다. 비슷한 규모의 B2B SaaS 팀이 2주 안에 첫 가치를 본 케이스를 짧게 정리했습니다.<br/><br/>
+            한 페이지로 정리된 도입 플랜을 보시겠어요?<span class="typing-cursor"></span>
+          </div>
+
+          <div class="email-actions">
+            <span class="mono">3 variants · sent &lt;1m ago to 142 leads</span>
+            <a class="btn btn-primary" href="#" style="height: 36px; padding: 0 14px; font-size: 13px;">Send sequence <span class="arr">→</span></a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- PROBLEM -->
+<section class="section" id="problem">
+  <div class="container">
+    <div class="section-head">
+      <span class="eyebrow"><span class="dot"></span> THE PROBLEM</span>
+      <h2 class="h-section">템플릿 1통과 3일 후 리마인드. <br/><em style="font-style: normal; color: var(--ink-3);">이건 자동화가 아니라 자포자기에 가깝습니다.</em></h2>
+      <p class="sub">실제 고객은 다 다릅니다. 가격 때문에 망설이는 사람, 보안을 검토하는 사람, 데모 직전 이탈한 사람. 같은 메일을 보내는 순간 80%의 기회를 놓칩니다.</p>
+    </div>
+    <div class="grid-4" style="margin-top: 40px;">
+      <div class="card card-soft">
+        <span class="num">PAIN · 01</span>
+        <div class="h-card">가격 민감</div>
+        <p>Pricing 페이지를 여러 번 보지만 결제하지 않는 리드.</p>
+      </div>
+      <div class="card card-soft">
+        <span class="num">PAIN · 02</span>
+        <div class="h-card">보안 검토 중</div>
+        <p>Security 섹션에서 오래 머무는 엔터프라이즈 리드.</p>
+      </div>
+      <div class="card card-soft">
+        <span class="num">PAIN · 03</span>
+        <div class="h-card">데모 직전 이탈</div>
+        <p>Demo CTA를 눌렀지만 폼을 완성하지 않은 리드.</p>
+      </div>
+      <div class="card card-soft">
+        <span class="num">PAIN · 04</span>
+        <div class="h-card">무반응 리드</div>
+        <p>메일은 열지만 클릭하지 않는, 가장 어려운 케이스.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="section" id="features">
+  <div class="container">
+    <div class="section-head">
+      <span class="eyebrow"><span class="dot"></span> CORE CAPABILITIES</span>
+      <h2 class="h-section">고객의 행동을 읽고, 다음에 보낼 한 문장을 결정합니다.</h2>
+    </div>
+    <div class="features-grid">
+      <div class="feat">
+        <span class="ic">01</span>
+        <h3>Intent Reading</h3>
+        <p>고객의 행동을 기반으로 현재 관심사와 구매 의도를 추론합니다. Pricing 3회, Security 체류, Case Study 클릭 등 신호를 결합합니다.</p>
+        <div class="list">
+          <div class="row"><span class="tag mono">SIGNAL</span><span>Pricing × 3 → 가격 민감</span></div>
+          <div class="row"><span class="tag mono">SIGNAL</span><span>Security 체류 → 보안 검토</span></div>
+          <div class="row"><span class="tag mono">SIGNAL</span><span>Demo dropout → 마지막 설득</span></div>
+        </div>
+      </div>
+      <div class="feat">
+        <span class="ic">02</span>
+        <h3>Dynamic Email Generation</h3>
+        <p>LLM이 리드별 맥락에 맞춰 이메일을 새로 작성합니다. 주제, 본문, 톤이 자동으로 조정됩니다.</p>
+        <div class="list">
+          <div class="row"><span class="tag mono">ANGLE</span><span>ROI / 회수 기간</span></div>
+          <div class="row"><span class="tag mono">ANGLE</span><span>유사 산업군 사례</span></div>
+          <div class="row"><span class="tag mono">ANGLE</span><span>15분 미니 데모</span></div>
+        </div>
+      </div>
+      <div class="feat">
+        <span class="ic">03</span>
+        <h3>Follow-up Brain</h3>
+        <p>한 번 보내고 끝나지 않습니다. 반응에 따라 후속 메시지의 각도가 자동으로 바뀝니다.</p>
+        <div class="list">
+          <div class="row"><span class="tag mono">IF</span><span>열람 + 미클릭 → 짧은 요약</span></div>
+          <div class="row"><span class="tag mono">IF</span><span>사례 클릭 → 산업 사례 추가</span></div>
+          <div class="row"><span class="tag mono">IF</span><span>가격표 클릭 → ROI 계산기</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SIGNALS -->
+<section class="section" id="signals">
+  <div class="container">
+    <div class="section-head">
+      <span class="eyebrow"><span class="dot"></span> INTENT SIGNALS</span>
+      <h2 class="h-section">행동 신호 하나하나를, 추론된 고민으로 바꿉니다.</h2>
+    </div>
+    <div class="signal-rows" style="max-width: 920px;">
+      <div class="signal-row">
+        <div class="sl"><span class="sig">Pricing 페이지 3회 방문</span><span class="infer">→ inferred: price sensitivity high</span></div>
+        <span class="sr">priority +24</span>
+      </div>
+      <div class="signal-row">
+        <div class="sl"><span class="sig">Security 섹션 1분 이상 체류</span><span class="infer">→ inferred: enterprise procurement review</span></div>
+        <span class="sr">priority +31</span>
+      </div>
+      <div class="signal-row">
+        <div class="sl"><span class="sig">Case Study · 유사 산업군 클릭</span><span class="infer">→ inferred: looking for proof</span></div>
+        <span class="sr">priority +18</span>
+      </div>
+      <div class="signal-row">
+        <div class="sl"><span class="sig">Demo CTA 클릭 후 이탈</span><span class="infer">→ inferred: needs final reassurance</span></div>
+        <span class="sr">priority +42</span>
+      </div>
+      <div class="signal-row">
+        <div class="sl"><span class="sig">기능 비교표 체류</span><span class="infer">→ inferred: comparing with competitor</span></div>
+        <span class="sr">priority +22</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOLLOW-UP -->
+<section class="section">
+  <div class="container">
+    <div class="section-head">
+      <span class="eyebrow"><span class="dot"></span> FOLLOW-UP BRAIN</span>
+      <h2 class="h-section">정해진 시퀀스가 아니라, 분기하는 메시지.</h2>
+      <p class="sub">매 반응마다 다음 메일의 각도가 다시 결정됩니다. 5단계 시퀀스를 일일이 짤 필요가 없습니다.</p>
+    </div>
+    <div class="followup">
+      <div class="fu-node"><span class="trig">IF · 열람함 + 미클릭</span><span class="act">더 짧은 요약 메일 발송</span></div>
+      <div class="fu-node alt"><span class="trig">IF · 사례 클릭</span><span class="act">같은 산업군 사례 추가 발송</span></div>
+      <div class="fu-node alt"><span class="trig">IF · 가격표 클릭</span><span class="act">ROI 계산기 자동 첨부</span></div>
+      <div class="fu-node"><span class="trig">IF · 데모 예약 안 함</span><span class="act">15분 미니 데모 제안</span></div>
+      <div class="fu-node"><span class="trig">IF · 완전 무반응 (7일)</span><span class="act">가치 제안 각도 변경</span></div>
+      <div class="fu-node alt"><span class="trig">IF · 회신함</span><span class="act">시퀀스 일시정지 · 담당자 인계</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<section class="section tight">
+  <div class="container">
+    <div class="section-head" style="margin-bottom: 32px;">
+      <span class="eyebrow"><span class="dot"></span> NUMBERS</span>
+    </div>
+    <div class="stat-row">
+      <div class="stat"><div class="v">+3.4×</div><div class="l">reply rate vs template</div></div>
+      <div class="stat"><div class="v">8 hrs</div><div class="l">saved per rep / week</div></div>
+      <div class="stat"><div class="v">142</div><div class="l">signals tracked</div></div>
+      <div class="stat"><div class="v">11 sec</div><div class="l">avg. compose time</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="section">
+  <div class="container">
+    <div class="section-head">
+      <span class="eyebrow"><span class="dot"></span> FAQ</span>
+      <h2 class="h-section">자주 묻는 질문</h2>
+    </div>
+    <div class="faq">
+      <div class="faq-row">
+        <div class="faq-q">기존 CRM은 그대로 쓸 수 있나요?</div>
+        <div class="faq-a">HubSpot, Salesforce, Pipedrive와 양방향 동기화됩니다. Attune은 리드 단계와 활동을 그대로 활용해 동작합니다.</div>
+      </div>
+      <div class="faq-row">
+        <div class="faq-q">LLM이 잘못된 정보를 보내지 않을까요?</div>
+        <div class="faq-a">발송 전 자동 사실 확인을 거치며, 회사명·금액·고객명 같은 핵심 필드는 화이트리스트로 잠겨 있습니다.</div>
+      </div>
+      <div class="faq-row">
+        <div class="faq-q">개인정보는 어떻게 다루나요?</div>
+        <div class="faq-a">EU·KR 데이터 거주지 옵션을 제공하며, 학습에 고객 데이터를 사용하지 않습니다.</div>
+      </div>
+      <div class="faq-row">
+        <div class="faq-q">언어는 한국어만 되나요?</div>
+        <div class="faq-a">한국어·영어·일본어를 동등하게 지원합니다. 톤은 회사 가이드에 맞춰 조정됩니다.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FINAL -->
+<section class="section" id="cta" style="border-bottom: 0;">
+  <div class="container">
+    <div class="final">
+      <span class="eyebrow"><span class="dot"></span> READY WHEN YOU ARE</span>
+      <h2>같은 메일을 다섯 번 더 보내기 전에,<br/>Attune을 한 번만 시도해 보세요.</h2>
+      <p>14일 무료 체험. 기존 CRM은 그대로 두세요.</p>
+      <form class="lead-form" data-lead-form data-service="attune" data-language="ko" data-cta-id="final">
+        <input type="email" name="email" placeholder="업무용 이메일" autocomplete="email" aria-label="업무용 이메일" required />
+        <button class="btn btn-primary btn-lg" type="submit">AI 이메일 시퀀스 만들기 <span class="arr">→</span></button>
+        <p class="lead-status" role="status" aria-live="polite"></p>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="container footer">
+  <div class="footer-row">
+    <div class="footer-col" style="max-width: 280px;">
+      <div class="brand"><span class="brand-mark"><img src="/assets/attune/favicon.svg" alt="" aria-hidden="true" /></span> Attune</div>
+      <p style="margin-top: 8px;">고객의 행동을 읽고, 가장 필요한 말로 다가가는 AI 세일즈 메시징 플랫폼.</p>
+    </div>
+    <div class="footer-col">
+      <h5>Product</h5>
+      <a>Intent Reading</a><a>Dynamic Email</a><a>Follow-up Brain</a><a>Integrations</a>
+    </div>
+    <div class="footer-col">
+      <h5>Company</h5>
+      <a>About</a><a>Careers</a><a>Customers</a><a>Contact</a>
+    </div>
+    <div class="footer-col">
+      <h5>Resources</h5>
+      <a>Docs</a><a>Playbook</a><a>Privacy</a><a>Security</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 Attune AI, Inc.</span>
+    <span>build · 2026.05.28</span>
+  </div>
+</footer>
+
+<script src="https://unpkg.com/landom-sdk/dist/landom-sdk.umd.js" defer></script>
+<script src="/assets/landom-sdk-init.js" defer></script>
+<script src="/assets/lead-capture.js" defer></script>
+</body>
+</html>

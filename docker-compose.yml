@@ -1,0 +1,73 @@
+services:
+  landing-pages:
+    build: .
+    image: landom-landing-pages:latest
+    container_name: landom-landing-pages
+    restart: unless-stopped
+    depends_on:
+      - api
+    environment:
+      LANDOM_SDK_ENDPOINT: ${LANDOM_SDK_ENDPOINT:-/api/v1/events}
+      LANDOM_SDK_API_KEY: ${LANDOM_SDK_API_KEY:-local-landom-sdk-key}
+      ATTUNE_SDK_API_KEY: ${ATTUNE_SDK_API_KEY:-local-attune-sdk-key}
+      SIAN_SDK_API_KEY: ${SIAN_SDK_API_KEY:-local-sian-sdk-key}
+      SOOM_SDK_API_KEY: ${SOOM_SDK_API_KEY:-local-soom-sdk-key}
+      MOYO_SDK_API_KEY: ${MOYO_SDK_API_KEY:-local-moyo-sdk-key}
+      META_PIXEL_ENABLED: ${META_PIXEL_ENABLED:-false}
+      META_PIXEL_ID: ${META_PIXEL_ID:-}
+    ports:
+      - "${LANDING_HTTP_PORT:-80}:80"
+    networks:
+      - landing-pages
+
+  api:
+    build: ./api
+    image: landom-lead-api:latest
+    container_name: landom-lead-api
+    restart: unless-stopped
+    environment:
+      TZ: Asia/Seoul
+      MYSQL_HOST: mysql
+      MYSQL_PORT: 3306
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-landing_pages}
+      MYSQL_USER: ${MYSQL_USER:-landing}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-landing_password}
+      LEADS_ADMIN_TOKEN: ${LEADS_ADMIN_TOKEN:-local-dev-token}
+      LANDOM_SDK_API_KEY: ${LANDOM_SDK_API_KEY:-local-landom-sdk-key}
+      ATTUNE_SDK_API_KEY: ${ATTUNE_SDK_API_KEY:-local-attune-sdk-key}
+      SIAN_SDK_API_KEY: ${SIAN_SDK_API_KEY:-local-sian-sdk-key}
+      SOOM_SDK_API_KEY: ${SOOM_SDK_API_KEY:-local-soom-sdk-key}
+      MOYO_SDK_API_KEY: ${MOYO_SDK_API_KEY:-local-moyo-sdk-key}
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - landing-pages
+
+  mysql:
+    image: mysql:8.4
+    container_name: landom-mysql
+    restart: unless-stopped
+    command: ["--default-time-zone=+09:00"]
+    environment:
+      TZ: Asia/Seoul
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-root_password}
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-landing_pages}
+      MYSQL_USER: ${MYSQL_USER:-landing}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-landing_password}
+    volumes:
+      - landing-mysql-data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h localhost -u$${MYSQL_USER} -p$${MYSQL_PASSWORD} --silent"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+    networks:
+      - landing-pages
+
+networks:
+  landing-pages:
+    name: landom-landing-pages
+
+volumes:
+  landing-mysql-data:
