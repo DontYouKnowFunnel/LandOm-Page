@@ -138,9 +138,11 @@ img, svg { display: block; max-width: 100%; }
 .eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
 
 .h-display {
-  font-size: clamp(40px, 6vw, 72px); line-height: 1.04; letter-spacing: -0.012em; font-weight: 900;
-  color: var(--ink); text-wrap: balance;
+  font-size: 60px; line-height: 1.08; letter-spacing: 0; font-weight: 900;
+  color: var(--ink); text-wrap: balance; word-break: keep-all; overflow-wrap: normal;
 }
+.hero-title-line { display: block; }
+.hero-title-keep { white-space: nowrap; }
 .h-section {
   font-size: clamp(28px, 3.6vw, 44px); line-height: 1.1; letter-spacing: -0.008em; font-weight: 900;
   color: var(--ink); text-wrap: balance; max-width: 780px;
@@ -640,7 +642,7 @@ img, svg { display: block; max-width: 100%; }
     .section.hero { padding: 48px 0 0 !important; }
     .nav-inner { height: 56px; }
     .nav-links { display: none; }
-    .h-display { font-size: 44px !important; letter-spacing: -0.028em; }
+    .h-display { font-size: 44px !important; line-height: 1.1; letter-spacing: 0; }
     .h-section { font-size: 30px; letter-spacing: -0.022em; }
     .sub { font-size: 16px; }
     .section-head { margin-bottom: 36px; gap: 14px; }
@@ -667,7 +669,8 @@ img, svg { display: block; max-width: 100%; }
     .final h2 { font-size: 36px; }
   }
   @media (max-width: 560px) {
-    .h-display { font-size: 34px !important; }
+    .h-display { font-size: 34px !important; line-height: 1.12; }
+    .hero-title-keep { white-space: normal; }
     .h-section { font-size: 24px; }
     .btn-lg { height: 44px; padding: 0 18px; font-size: 14px; }
     .hero-ctas { flex-direction: column; align-items: stretch; }
@@ -694,7 +697,7 @@ img, svg { display: block; max-width: 100%; }
       <a href="#support">Support</a>
     </div>
     <div class="nav-cta">
-      <a class="btn btn-primary" href="#cta">사전 예약 <span class="arr">→</span></a>
+      <a class="btn btn-primary" href="#cta">사전 예약 알림 <span class="arr">→</span></a>
     </div>
   </div>
 </nav>
@@ -705,22 +708,22 @@ img, svg { display: block; max-width: 100%; }
     <div class="hero-inner">
       <div class="hero-copy">
         <span class="eyebrow"><span class="dot" style="background: var(--accent-2);"></span> NIGHT ROUTINE · LIMITED RELEASE 2026</span>
-        <h1 class="h-display" style="font-size: 60px;">
-          잠들기 전,<br/>
-          <span style="color: var(--accent-2);">폰을 내려놓고</span><br/>
-          숨을 고르세요.
+        <h1 class="h-display">
+          <span class="hero-title-line">잠들기 전,</span>
+          <span class="hero-title-line" style="color: var(--accent-2);">폰을 내려놓고</span>
+          <span class="hero-title-line">숨을 고르세요.</span>
         </h1>
         <p class="sub">
           SOOM은 스마트폰을 침대 밖에 두도록 돕고, 은은한 조명과 루틴 타이머로
           나만의 차분한 밤을 만들어주는 수면 루틴 디바이스입니다.
         </p>
         <div class="hero-ctas" style="display: flex; gap: 12px; margin-top: 4px;">
-          <a class="btn btn-primary btn-lg" href="#cta">나의 밤 루틴 시작하기 <span class="arr">→</span></a>
+          <a class="btn btn-primary btn-lg" href="#cta">SOOM 사전 예약 알림 받기 <span class="arr">→</span></a>
         </div>
         <div style="display: flex; gap: 18px; font-family: var(--font-mono); font-size: 12px; color: var(--ink-3); margin-top: 4px;">
-          <span>· 30-day trial</span>
-          <span>· free shipping</span>
-          <span>· 2-yr warranty</span>
+          <span>· preorder notice</span>
+          <span>· prototype preview</span>
+          <span>· launch updates by email</span>
         </div>
       </div>
 
@@ -879,30 +882,30 @@ img, svg { display: block; max-width: 100%; }
           <h4>SOOM · Solo</h4>
           <span class="tag mono">한 사람용</span>
         </div>
-        <div class="price">189,000<small>원</small></div>
+        <div class="price"><small>예상가</small> 189,000<small>원</small></div>
         <p style="font-size: 13.5px; color: var(--ink-3); line-height: 1.5;">SOOM 디바이스 한 개. 침대 옆 작은 변화로 시작하기 좋습니다.</p>
         <div class="includes">
           <div class="row"><span class="ck">✓</span>SOOM device × 1</div>
           <div class="row"><span class="ck">✓</span>Linen pouch · oak charging dock</div>
-          <div class="row"><span class="ck">✓</span>30-day trial · 무료 반품</div>
-          <div class="row"><span class="ck">✓</span>2년 무상 A/S</div>
+          <div class="row"><span class="ck">✓</span>사전 예약 오픈 알림</div>
+          <div class="row"><span class="ck">✓</span>프로토타입 업데이트</div>
         </div>
-        <a class="btn btn-outline" href="#cta" style="margin-top: 4px;">Solo 사전 예약</a>
+        <a class="btn btn-outline" href="#cta" style="margin-top: 4px;">Solo 알림 신청</a>
       </div>
       <div class="bundle-card featured">
         <div class="top">
           <h4>SOOM · Pair</h4>
           <span class="tag mono solid" style="background: var(--accent); color: #fff;">RECOMMENDED</span>
         </div>
-        <div class="price">329,000<small>원</small></div>
+        <div class="price"><small>예상가</small> 329,000<small>원</small></div>
         <p style="font-size: 13.5px; color: var(--ink-3); line-height: 1.5;">두 개의 SOOM. 침실을 함께 쓰는 사람을 위한 페어 세트.</p>
         <div class="includes">
           <div class="row"><span class="ck">✓</span>SOOM device × 2</div>
           <div class="row"><span class="ck">✓</span>Walnut charging stand</div>
           <div class="row"><span class="ck">✓</span>Custom routine sync</div>
-          <div class="row"><span class="ck">✓</span>30-day trial · 무료 반품</div>
+          <div class="row"><span class="ck">✓</span>사전 예약 오픈 알림</div>
         </div>
-        <a class="btn btn-primary" href="#cta" style="margin-top: 4px;">Pair 사전 예약 <span class="arr">→</span></a>
+        <a class="btn btn-primary" href="#cta" style="margin-top: 4px;">Pair 알림 신청 <span class="arr">→</span></a>
       </div>
     </div>
   </div>
@@ -936,7 +939,7 @@ img, svg { display: block; max-width: 100%; }
         <div style="display: flex; align-items: center; gap: 10px; padding-top: 14px; border-top: 1px solid var(--line);">
           <span style="width: 32px; height: 32px; border-radius: 50%; background: repeating-linear-gradient(135deg, rgba(0,0,0,0.05) 0 1px, transparent 1px 6px), var(--cream); border: 1px solid var(--line);"></span>
           <div>
-            <div style="font-size: 13px; font-weight: 500;">민지 · 27</div>
+            <div style="font-size: 13px; font-weight: 500;">sj****</div>
             <div style="font-family: var(--font-mono); font-size: 11px; color: var(--ink-3);">designer · seoul</div>
           </div>
         </div>
@@ -946,7 +949,7 @@ img, svg { display: block; max-width: 100%; }
         <div style="display: flex; align-items: center; gap: 10px; padding-top: 14px; border-top: 1px solid var(--line);">
           <span style="width: 32px; height: 32px; border-radius: 50%; background: repeating-linear-gradient(135deg, rgba(0,0,0,0.05) 0 1px, transparent 1px 6px), var(--cream); border: 1px solid var(--line);"></span>
           <div>
-            <div style="font-size: 13px; font-weight: 500;">도현 · 34</div>
+            <div style="font-size: 13px; font-weight: 500;">al****</div>
             <div style="font-family: var(--font-mono); font-size: 11px; color: var(--ink-3);">engineer · busan</div>
           </div>
         </div>
@@ -956,7 +959,7 @@ img, svg { display: block; max-width: 100%; }
         <div style="display: flex; align-items: center; gap: 10px; padding-top: 14px; border-top: 1px solid var(--line);">
           <span style="width: 32px; height: 32px; border-radius: 50%; background: repeating-linear-gradient(135deg, rgba(0,0,0,0.05) 0 1px, transparent 1px 6px), var(--cream); border: 1px solid var(--line);"></span>
           <div>
-            <div style="font-size: 13px; font-weight: 500;">유나 · 31</div>
+            <div style="font-size: 13px; font-weight: 500;">lo****</div>
             <div style="font-family: var(--font-mono); font-size: 11px; color: var(--ink-3);">writer · jeju</div>
           </div>
         </div>
@@ -997,12 +1000,12 @@ img, svg { display: block; max-width: 100%; }
 <section class="section" id="cta" style="border-bottom: 0;">
   <div class="container">
     <div class="final">
-      <span class="eyebrow"><span class="dot"></span> SHIPPING · 2026 SUMMER</span>
-      <h2>잠들기 전 30분,<br/>화면 대신 SOOM을 켜세요.</h2>
-      <p>한정 사전 예약 진행 중. 30일 무료 반품과 2년 무상 A/S가 함께 제공됩니다.</p>
+      <span class="eyebrow"><span class="dot"></span> PREORDER NOTICE · 2026 SUMMER</span>
+      <h2>잠들기 전 30분,<br/>화면 대신 SOOM을 켜는 밤을 준비 중입니다.</h2>
+      <p>정식 판매 전, 사전 예약 오픈 일정과 프로토타입 업데이트를 이메일로 보내드립니다.</p>
       <form class="lead-form" data-lead-form data-service="soom" data-language="ko" data-cta-id="final">
         <input type="email" name="email" placeholder="이메일 주소" autocomplete="email" aria-label="이메일 주소" required />
-        <button class="btn btn-primary btn-lg" type="submit">나의 밤 루틴 시작하기 <span class="arr">→</span></button>
+        <button class="btn btn-primary btn-lg" type="submit">사전 예약 알림 받기 <span class="arr">→</span></button>
         <p class="lead-status" role="status" aria-live="polite"></p>
       </form>
     </div>
@@ -1026,12 +1029,12 @@ img, svg { display: block; max-width: 100%; }
     </div>
     <div class="footer-col">
       <h5>Support</h5>
-      <a>FAQ</a><a>Warranty</a><a>Shipping</a><a>Returns</a>
+      <a>FAQ</a><a>Prototype</a><a>Preorder</a><a>Updates</a>
     </div>
   </div>
   <div class="footer-bottom">
     <span>© 2026 SOOM Studio.</span>
-    <span>shipping · 2026 summer</span>
+    <span>preorder notice · 2026 summer</span>
   </div>
 </footer>
 

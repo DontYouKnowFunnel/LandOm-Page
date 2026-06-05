@@ -53,7 +53,7 @@
 
       form.classList.add("is-sent");
       form.reset();
-      setStatus(form, "신청이 접수되었습니다. 곧 안내 메일을 보내드릴게요.", false);
+      setStatus(form, "알림 신청이 접수되었습니다. 곧 안내 메일을 보내드릴게요.", false);
       trackMetaLead(payload.service);
     } catch (error) {
       setStatus(form, error.message || "잠시 후 다시 시도해 주세요.", true);

@@ -138,9 +138,11 @@ img, svg { display: block; max-width: 100%; }
 .eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
 
 .h-display {
-  font-size: clamp(40px, 6vw, 72px); line-height: 1.04; letter-spacing: -0.012em; font-weight: 900;
-  color: var(--ink); text-wrap: balance;
+  font-size: 68px; line-height: 1.08; letter-spacing: 0; font-weight: 900;
+  color: var(--ink); text-wrap: balance; word-break: keep-all; overflow-wrap: normal;
 }
+.hero-title-line { display: block; }
+.hero-title-keep { white-space: nowrap; }
 .h-section {
   font-size: clamp(28px, 3.6vw, 44px); line-height: 1.1; letter-spacing: -0.008em; font-weight: 900;
   color: var(--ink); text-wrap: balance; max-width: 780px;
@@ -546,7 +548,7 @@ img, svg { display: block; max-width: 100%; }
     .section.hero { padding: 56px 0 40px; }
     .nav-inner { height: 56px; }
     .nav-links { display: none; }
-    .h-display { font-size: 42px; letter-spacing: -0.028em; }
+    .h-display { font-size: 44px; line-height: 1.1; letter-spacing: 0; }
     .h-section { font-size: 30px; letter-spacing: -0.022em; }
     .sub { font-size: 16px; }
     .section-head { margin-bottom: 36px; gap: 14px; }
@@ -570,7 +572,8 @@ img, svg { display: block; max-width: 100%; }
     .final h2 { font-size: 36px; }
   }
   @media (max-width: 560px) {
-    .h-display { font-size: 34px; }
+    .h-display { font-size: 34px; line-height: 1.12; }
+    .hero-title-keep { white-space: normal; }
     .h-section { font-size: 24px; }
     .btn-lg { height: 44px; padding: 0 18px; font-size: 14px; }
     .hero-ctas { flex-direction: column; align-items: stretch; }
@@ -598,7 +601,7 @@ img, svg { display: block; max-width: 100%; }
       <a href="#changelog">Changelog</a>
     </div>
     <div class="nav-cta">
-      <a class="btn btn-primary" href="#cta">분석 시작하기 <span class="arr">→</span></a>
+      <a class="btn btn-primary" href="#cta">베타 사전 예약 <span class="arr">→</span></a>
     </div>
   </div>
 </nav>
@@ -609,20 +612,20 @@ img, svg { display: block; max-width: 100%; }
     <div class="hero-copy" style="max-width: 880px;">
       <span class="eyebrow"><span class="dot"></span> AI LANDING PAGE COPILOT · v2.4</span>
       <h1 class="h-display">
-        수많은 랜딩페이지의 성공 패턴을 학습한 AI가<br/>
-        <span style="color: var(--ink-3);">당신의 페이지에 꼭 맞는 개선안을 찾아드립니다.</span>
+        <span class="hero-title-line">랜딩페이지 성공 패턴을 학습한 AI가</span>
+        <span class="hero-title-line" style="color: var(--ink-3);">내 페이지의 개선안을 찾아드립니다.</span>
       </h1>
       <p class="sub">
         LandOm은 사용자의 클릭, 스크롤, 체류시간, 이탈 구간을 분석하고
         유사한 랜딩페이지 개선 사례를 바탕으로 카피, CTA, 섹션 구조 개선안을 제안합니다.
       </p>
       <div class="hero-ctas">
-        <a class="btn btn-primary btn-lg" href="#cta">내 랜딩페이지 개선안 받아보기 <span class="arr">→</span></a>
+        <a class="btn btn-primary btn-lg" href="#cta">LandOm 베타 사전 예약하기 <span class="arr">→</span></a>
       </div>
       <div class="hero-meta">
-        <span>· 14-day free trial</span>
-        <span>· No credit card required</span>
-        <span>· SOC 2 Type II</span>
+        <span>· private beta waitlist</span>
+        <span>· no payment required</span>
+        <span>· launch updates by email</span>
       </div>
     </div>
 
@@ -902,12 +905,12 @@ img, svg { display: block; max-width: 100%; }
 <section class="section" id="cta" style="border-bottom: 0;">
   <div class="container">
     <div class="final">
-      <span class="eyebrow"><span class="dot"></span> READY WHEN YOU ARE</span>
-      <h2>다음 분기, A/B 테스트보다<br/>먼저 가설을 좁히세요.</h2>
-      <p>14일 무료 체험. 카드 등록 없이 한 줄 설치로 시작합니다.</p>
+      <span class="eyebrow"><span class="dot"></span> EARLY ACCESS</span>
+      <h2>다음 분기, A/B 테스트보다<br/>먼저 가설을 좁히는 베타를 준비 중입니다.</h2>
+      <p>정식 공개 전, 초기 베타 초대와 랜딩페이지 개선 리포트 샘플을 이메일로 보내드립니다.</p>
       <form class="lead-form" data-lead-form data-service="landom" data-language="ko" data-cta-id="final">
         <input type="email" name="email" placeholder="업무용 이메일" autocomplete="email" aria-label="업무용 이메일" required />
-        <button class="btn btn-primary btn-lg" type="submit">내 랜딩페이지 개선안 받아보기 <span class="arr">→</span></button>
+        <button class="btn btn-primary btn-lg" type="submit">베타 사전 예약하기 <span class="arr">→</span></button>
         <p class="lead-status" role="status" aria-live="polite"></p>
       </form>
     </div>
@@ -952,7 +955,7 @@ img, svg { display: block; max-width: 100%; }
         crumb: "ATTUNE · SALES MESSAGING AI",
         h: "모든 리드에게 같은 이메일을 보내지 마세요",
         p: "고객의 행동을 읽고, LLM이 가장 알맞은 세일즈 이메일을 자동으로 작성합니다.",
-        cta: "AI 이메일 시퀀스 만들기"
+        cta: "Attune 베타 알림 신청"
       },
       pattern: "SaaS / B2B / Free Trial CTA",
       ref: "142 similar pages",
@@ -967,13 +970,13 @@ img, svg { display: block; max-width: 100%; }
         crumb: "MOYO · CAREER SPRINT",
         h: "혼자 미루던 포트폴리오, 이번 6주 코호트에서 끝내세요",
         p: "주간 미션, 동료 리뷰, 멘토 피드백, 라이브 세션으로 결과물을 완성합니다.",
-        cta: "6월 코호트 지원하기"
+        cta: "다음 코호트 알림 신청"
       },
       pattern: "Edu / Cohort / Application",
       ref: "38 similar pages",
       issue: "Urgency cues are missing — no deadline or remaining seats",
       copy: "마감일과 남은 자리 수를 Hero 근처에 노출하면 코호트형 페이지 전환율이 평균 +24% 상승합니다.",
-      hero: '"남은 17석 · 모집 마감까지 14일"',
+      hero: '"다음 코호트 오픈 알림을 먼저 받아보세요"',
       pin: "CTA · No urgency cue"
     },
     sian: {
@@ -982,7 +985,7 @@ img, svg { display: block; max-width: 100%; }
         crumb: "SIAN · AI LANDING DESIGNER",
         h: "아이디어 하나면, 4개의 랜딩페이지 시안이 먼저 나옵니다",
         p: "Sian은 제품 아이디어를 바탕으로 서로 다른 디자인 방향의 시안을 제공합니다.",
-        cta: "내 아이디어로 시안 만들기"
+        cta: "Sian 베타 알림 신청"
       },
       pattern: "SaaS / Design Tool / Free Trial",
       ref: "61 similar pages",
@@ -997,7 +1000,7 @@ img, svg { display: block; max-width: 100%; }
         crumb: "SOOM · NIGHT ROUTINE DEVICE",
         h: "잠들기 전 30분, 화면 대신 루틴을 켜세요",
         p: "SOOM은 스마트폰을 도크에 두고, 은은한 조명과 타이머로 차분한 밤을 만듭니다.",
-        cta: "나의 밤 루틴 만들기"
+        cta: "SOOM 사전 예약 알림"
       },
       pattern: "D2C / Lifestyle Hardware",
       ref: "27 similar pages",

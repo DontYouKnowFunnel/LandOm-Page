@@ -138,9 +138,11 @@ img, svg { display: block; max-width: 100%; }
 .eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
 
 .h-display {
-  font-size: clamp(40px, 6vw, 72px); line-height: 1.04; letter-spacing: -0.012em; font-weight: 900;
-  color: var(--ink); text-wrap: balance;
+  font-size: 68px; line-height: 1.08; letter-spacing: 0; font-weight: 900;
+  color: var(--ink); text-wrap: balance; word-break: keep-all; overflow-wrap: normal;
 }
+.hero-title-line { display: block; }
+.hero-title-keep { white-space: nowrap; }
 .h-section {
   font-size: clamp(28px, 3.6vw, 44px); line-height: 1.1; letter-spacing: -0.008em; font-weight: 900;
   color: var(--ink); text-wrap: balance; max-width: 780px;
@@ -544,7 +546,7 @@ img, svg { display: block; max-width: 100%; }
     .section.hero { padding: 56px 0 40px; }
     .nav-inner { height: 56px; }
     .nav-links { display: none; }
-    .h-display { font-size: 42px; letter-spacing: -0.028em; }
+    .h-display { font-size: 44px; line-height: 1.1; letter-spacing: 0; }
     .h-section { font-size: 30px; letter-spacing: -0.022em; }
     .sub { font-size: 16px; }
     .section-head { margin-bottom: 36px; gap: 14px; }
@@ -566,7 +568,8 @@ img, svg { display: block; max-width: 100%; }
     .final h2 { font-size: 36px; }
   }
   @media (max-width: 560px) {
-    .h-display { font-size: 34px; }
+    .h-display { font-size: 34px; line-height: 1.12; }
+    .hero-title-keep { white-space: normal; }
     .h-section { font-size: 24px; }
     .btn-lg { height: 44px; padding: 0 18px; font-size: 14px; }
     .hero-ctas { flex-direction: column; align-items: stretch; }
@@ -593,7 +596,7 @@ img, svg { display: block; max-width: 100%; }
       <a href="#templates">Templates</a>
     </div>
     <div class="nav-cta">
-      <a class="btn btn-primary" href="#cta">시안 만들기 <span class="arr">→</span></a>
+      <a class="btn btn-primary" href="#cta">베타 알림 신청 <span class="arr">→</span></a>
     </div>
   </div>
 </nav>
@@ -604,20 +607,20 @@ img, svg { display: block; max-width: 100%; }
     <div class="hero-copy" style="max-width: 880px; display: flex; flex-direction: column; gap: 22px;">
       <span class="eyebrow"><span class="dot"></span> AI LANDING DESIGNER · v1.8</span>
       <h1 class="h-display">
-        아이디어 하나면,<br/>
-        <span style="color: var(--ink-3);">4개의 랜딩페이지 시안이 먼저 나옵니다.</span>
+        <span class="hero-title-line">아이디어 하나면,</span>
+        <span class="hero-title-line" style="color: var(--ink-3);">4개 시안이 먼저 나옵니다.</span>
       </h1>
       <p class="sub">
         Sian은 제품 아이디어를 바탕으로 서로 다른 디자인 방향의 랜딩페이지 시안을 생성하고,
         선택한 시안을 브랜드 규칙과 배포 기준에 맞춰 완성형 페이지로 제작합니다.
       </p>
       <div class="hero-ctas" style="display: flex; gap: 12px; margin-top: 4px;">
-        <a class="btn btn-primary btn-lg" href="#cta">내 아이디어로 시안 만들기 <span class="arr">→</span></a>
+        <a class="btn btn-primary btn-lg" href="#cta">Sian 베타 알림 신청하기 <span class="arr">→</span></a>
       </div>
       <div style="display: flex; gap: 18px; font-family: var(--font-mono); font-size: 12px; color: var(--ink-3); margin-top: 4px;">
-        <span>· 평균 생성 시간 24초</span>
-        <span>· 1-click publish</span>
-        <span>· custom domain 지원</span>
+        <span>· private beta waitlist</span>
+        <span>· 생성 기능 준비 중</span>
+        <span>· 출시 소식 이메일 안내</span>
       </div>
     </div>
 
@@ -979,12 +982,12 @@ img, svg { display: block; max-width: 100%; }
 <section class="section" id="cta" style="border-bottom: 0;">
   <div class="container">
     <div class="final">
-      <span class="eyebrow"><span class="dot"></span> READY TO GENERATE</span>
-      <h2>좋은 첫 시안이<br/>좋은 페이지를 만듭니다.</h2>
-      <p>아이디어 한 줄로 시작. 24초 뒤에 4개의 방향이 도착합니다.</p>
+      <span class="eyebrow"><span class="dot"></span> EARLY ACCESS</span>
+      <h2>좋은 첫 시안이<br/>좋은 페이지를 만든다는 가설을 준비 중입니다.</h2>
+      <p>정식 공개 전, 베타 오픈 일정과 시안 생성 샘플을 이메일로 보내드립니다.</p>
       <form class="lead-form" data-lead-form data-service="sian" data-language="ko" data-cta-id="final">
         <input type="email" name="email" placeholder="업무용 이메일" autocomplete="email" aria-label="업무용 이메일" required />
-        <button class="btn btn-primary btn-lg" type="submit">내 아이디어로 시안 만들기 <span class="arr">→</span></button>
+        <button class="btn btn-primary btn-lg" type="submit">베타 알림 신청하기 <span class="arr">→</span></button>
         <p class="lead-status" role="status" aria-live="polite"></p>
       </form>
     </div>
