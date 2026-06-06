@@ -625,14 +625,23 @@ img, svg { display: block; max-width: 100%; }
     padding: 28px; background: #fff;
     display: flex; flex-direction: column; gap: 16px;
   }
-  .bundle-card.featured { border-color: var(--accent); }
-  .bundle-card .top { display: flex; justify-content: space-between; align-items: center; }
+  .bundle-card.featured {
+    border-color: var(--accent);
+    border-width: 2px;
+    box-shadow: 0 18px 42px rgba(17, 16, 58, 0.14);
+  }
+  .bundle-card .top { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; }
+  .bundle-title { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
   .bundle-card h4 { font-size: 19px; font-weight: 500; letter-spacing: -0.015em; }
+  .bundle-sub { font-size: 13px; line-height: 1.45; color: var(--ink-3); }
   .bundle-card .price { font-size: 30px; font-weight: 500; letter-spacing: -0.025em; }
   .bundle-card .price small { font-size: 14px; font-family: var(--font-mono); color: var(--ink-3); font-weight: 400; margin-left: 4px; }
+  .bundle-desc { font-size: 13.5px; color: var(--ink-3); line-height: 1.55; }
+  .bundle-reason { padding: 12px 14px; border-radius: 10px; border: 1px solid var(--line); background: var(--bg-soft); color: var(--ink-2); font-size: 13px; line-height: 1.55; }
   .bundle-card .includes { display: flex; flex-direction: column; gap: 8px; padding-top: 12px; border-top: 1px solid var(--line); }
-  .bundle-card .includes .row { display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--ink-2); }
-  .bundle-card .includes .ck { width: 16px; height: 16px; border-radius: 4px; background: var(--accent); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 10px; }
+  .bundle-card .includes .row { display: flex; align-items: flex-start; gap: 10px; font-size: 13px; color: var(--ink-2); line-height: 1.5; }
+  .bundle-card .includes .ck { width: 16px; height: 16px; border-radius: 4px; background: var(--accent); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 10px; flex: 0 0 16px; margin-top: 2px; }
+  .bundle-card .btn { margin-top: 4px; align-self: flex-start; white-space: normal; text-align: center; }
 
   /* ---------- Responsive ---------- */
   @media (max-width: 960px) {
@@ -680,6 +689,8 @@ img, svg { display: block; max-width: 100%; }
     .product-stage { aspect-ratio: 4/3; }
     .final { padding: 48px 22px; }
     .final h2 { font-size: 28px; }
+    .bundle-card { padding: 24px; }
+    .bundle-card .btn { width: 100%; }
   }
 </style>
 </head>
@@ -879,33 +890,42 @@ img, svg { display: block; max-width: 100%; }
     <div class="bundle">
       <div class="bundle-card">
         <div class="top">
-          <h4>SOOM · Solo</h4>
+          <div class="bundle-title">
+            <h4>SOOM · Solo</h4>
+            <p class="bundle-sub">혼자 잠드는 루틴을 바꾸려는 경우</p>
+          </div>
           <span class="tag mono">한 사람용</span>
         </div>
         <div class="price"><small>예상가</small> 189,000<small>원</small></div>
-        <p style="font-size: 13.5px; color: var(--ink-3); line-height: 1.5;">SOOM 디바이스 한 개. 침대 옆 작은 변화로 시작하기 좋습니다.</p>
+        <p class="bundle-desc">작게 시작하려면 한 개로 충분한 구성입니다.</p>
         <div class="includes">
+          <div class="row"><span class="ck">✓</span>혼자 쓰는 침실 루틴용</div>
           <div class="row"><span class="ck">✓</span>SOOM device × 1</div>
           <div class="row"><span class="ck">✓</span>Linen pouch · oak charging dock</div>
           <div class="row"><span class="ck">✓</span>사전 예약 오픈 알림</div>
           <div class="row"><span class="ck">✓</span>프로토타입 업데이트</div>
         </div>
-        <a class="btn btn-outline" href="#cta" style="margin-top: 4px;">Solo 알림 신청</a>
+        <a class="btn btn-outline" href="#cta">혼자 쓰는 버전 알림 받기</a>
       </div>
       <div class="bundle-card featured">
         <div class="top">
-          <h4>SOOM · Pair</h4>
-          <span class="tag mono solid" style="background: var(--accent); color: #fff;">RECOMMENDED</span>
+          <div class="bundle-title">
+            <h4>SOOM · Pair</h4>
+            <p class="bundle-sub">함께 쓰는 침실을 더 편하게 만들고 싶은 경우</p>
+          </div>
+          <span class="tag mono solid">추천</span>
         </div>
         <div class="price"><small>예상가</small> 329,000<small>원</small></div>
-        <p style="font-size: 13.5px; color: var(--ink-3); line-height: 1.5;">두 개의 SOOM. 침실을 함께 쓰는 사람을 위한 페어 세트.</p>
+        <p class="bundle-desc">두 사람의 루틴을 맞추려면 두 개가 자연스러운 구성입니다.</p>
+        <p class="bundle-reason">추천 이유: 같은 침실에서 함께 쓸 계획이라면, 구성 차이를 가장 바로 확인할 수 있는 선택입니다.</p>
         <div class="includes">
+          <div class="row"><span class="ck">✓</span>함께 쓰는 침실 루틴용</div>
           <div class="row"><span class="ck">✓</span>SOOM device × 2</div>
-          <div class="row"><span class="ck">✓</span>Walnut charging stand</div>
           <div class="row"><span class="ck">✓</span>Custom routine sync</div>
+          <div class="row"><span class="ck">✓</span>Walnut charging stand</div>
           <div class="row"><span class="ck">✓</span>사전 예약 오픈 알림</div>
         </div>
-        <a class="btn btn-primary" href="#cta" style="margin-top: 4px;">Pair 알림 신청 <span class="arr">→</span></a>
+        <a class="btn btn-primary" href="#cta">둘이 함께 쓰는 버전 알림 받기 <span class="arr">→</span></a>
       </div>
     </div>
   </div>

@@ -425,24 +425,50 @@ img, svg { display: block; max-width: 100%; }
   .opt-build .arr { font-family: var(--font-mono); }
 
   /* Feature row */
-  .feature-row { display: grid; grid-template-columns: 1fr 1.05fr; gap: 64px; align-items: center; padding: 56px 0; border-top: 1px solid var(--line); }
+  .feature-row { display: grid; grid-template-columns: 1fr 1.05fr; gap: 48px; align-items: center; padding: 56px 0; border-top: 1px solid var(--line); }
   .feature-row:first-of-type { border-top: 0; padding-top: 0; }
   .feature-row.reverse { grid-template-columns: 1.05fr 1fr; }
   .feature-row.reverse .feature-copy { order: 2; }
   .feature-copy { display: flex; flex-direction: column; gap: 16px; }
+  .feature-copy .h-card { font-size: 30px; line-height: 1.22; letter-spacing: -0.02em; }
+  .feature-copy .sub { font-size: 16px; }
   .feature-copy ul { display: flex; flex-direction: column; gap: 8px; margin-top: 8px; list-style: none; }
   .feature-copy ul li { font-size: 14px; color: var(--ink-2); padding-left: 18px; position: relative; }
   .feature-copy ul li::before { content: "→"; position: absolute; left: 0; color: var(--accent-dark); font-family: var(--font-mono); font-size: 11px; top: 2px; }
 
+  .flow-note {
+    max-width: 560px;
+    margin: 2px 0 8px;
+    padding-left: 2px;
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--ink-3);
+  }
+
   /* Brand Lock viz */
   .brand-lock {
-    background: #fff; border: 1px solid var(--line); border-radius: 14px;
-    padding: 22px; display: flex; flex-direction: column; gap: 16px;
+    background: var(--panel); border: 1px solid var(--line); border-radius: 14px;
+    padding: 22px; display: flex; flex-direction: column; gap: 14px;
+    box-shadow: var(--shadow-card);
   }
   .brand-lock-head { display: flex; justify-content: space-between; align-items: center; }
-  .brand-lock-head .title { font-size: 14px; font-weight: 500; }
+  .brand-lock-head .title { font-size: 14px; font-weight: 600; color: var(--ink); }
   .brand-lock-head .score { font-family: var(--font-mono); font-size: 11px; color: var(--ink-3); }
-  .brand-lock-head .score b { color: var(--pop-lime); font-weight: 500; }
+  .brand-lock-head .score b { color: var(--accent-dark); font-weight: 700; }
+
+  .brand-lock-summary,
+  .launch-summary {
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 12px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    font-size: 13px;
+    line-height: 1.55;
+  }
+  .brand-lock-summary { background: var(--accent-soft); color: var(--ink-3); }
+  .brand-lock-summary strong { color: var(--ink); font-size: 13px; }
 
   .lock-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
   .lock-tile {
@@ -464,21 +490,37 @@ img, svg { display: block; max-width: 100%; }
 
   /* Launch Check */
   .launch {
-    background: #fff; border: 1px solid var(--line); border-radius: 14px;
+    background: var(--panel); border: 1px solid var(--line); border-radius: 14px;
     overflow: hidden;
+    box-shadow: var(--shadow-card);
   }
   .launch-head { padding: 16px 20px; border-bottom: 1px solid var(--line); display: flex; justify-content: space-between; align-items: center; }
-  .launch-head .title { font-size: 14px; font-weight: 500; }
+  .launch-head .title { font-size: 14px; font-weight: 600; color: var(--ink); }
   .launch-head .running { font-family: var(--font-mono); font-size: 11px; color: var(--ink-3); display: flex; align-items: center; gap: 8px; }
-  .launch-head .running .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--pop-lime); }
+  .launch-head .running .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 4px rgba(74, 222, 128, 0.12); }
+  .launch-summary {
+    margin: 16px 20px 4px;
+    background: linear-gradient(180deg, rgba(255, 247, 237, 0.92) 0%, rgba(240, 253, 244, 0.92) 100%);
+    border-color: rgba(245, 158, 11, 0.18);
+    color: var(--ink-3);
+  }
+  .launch-summary strong { color: var(--warm-ink); font-size: 13px; }
+  .launch-summary span { color: var(--ink-3); }
   .launch-row { padding: 14px 20px; display: grid; grid-template-columns: 24px 1fr auto; gap: 14px; align-items: center; border-bottom: 1px solid var(--line); font-size: 13.5px; }
-  .launch-row:last-child { border-bottom: 0; }
+  .launch-row:last-of-type { border-bottom: 0; }
   .launch-row .status { width: 18px; height: 18px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 600; }
   .launch-row .status.ok { background: #ecfdf5; color: #047857; border: 1px solid #a7f3d0; }
   .launch-row .status.warn { background: #fffbeb; color: #b45309; border: 1px solid #fde68a; }
   .launch-row .status.err { background: #fef2f2; color: #b91c1c; border: 1px solid #fecaca; }
   .launch-row .label { color: var(--ink); }
-  .launch-row .meta { font-family: var(--font-mono); font-size: 11.5px; color: var(--ink-3); }
+  .launch-row .meta { font-family: var(--font-mono); font-size: 11.5px; color: var(--ink-3); white-space: nowrap; }
+  .launch-foot {
+    padding: 14px 20px 18px;
+    border-top: 1px solid var(--line);
+    font-size: 12.5px;
+    color: var(--ink-3);
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.72) 0%, rgba(240, 253, 244, 0.86) 100%);
+  }
 
   /* Flow showcase */
   .flow { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin-top: 40px; align-items: stretch; }
@@ -577,6 +619,12 @@ img, svg { display: block; max-width: 100%; }
     .thumbs { grid-template-columns: 1fr; }
     .flow { grid-template-columns: 1fr; }
     .lock-grid { grid-template-columns: 1fr; }
+    .brand-lock,
+    .launch { border-radius: 12px; }
+    .brand-lock-head,
+    .launch-head { align-items: flex-start; flex-direction: column; }
+    .launch-row { grid-template-columns: 24px 1fr; }
+    .launch-row .meta { grid-column: 2 / -1; white-space: normal; margin-top: -4px; }
     .final { padding: 48px 22px; }
     .final h2 { font-size: 28px; }
   }
@@ -841,95 +889,106 @@ img, svg { display: block; max-width: 100%; }
     <div class="feature-row" style="padding-top: 0; border-top: 0;">
       <div class="feature-copy">
         <span class="kicker">02 · BRAND LOCK</span>
-        <h3 class="h-card" style="font-size: 30px; letter-spacing: -0.02em;">시안을 편집해도, 브랜드는 깨지지 않습니다.</h3>
-        <p class="sub" style="font-size: 16px;">색·폰트·버튼 규칙이 고정된 상태로 편집됩니다. 카드·배지·CTA 컴포넌트도 시안과 분리되어 보호됩니다.</p>
+        <h3 class="h-card">시안을 편집해도 브랜드 규칙은 자동으로 유지됩니다.</h3>
+        <p class="sub">편집 중에도 색, 폰트, 버튼, 로고 여백이 맞게 지켜져 수정할 때마다 다시 맞출 필요가 줄어듭니다.</p>
         <ul>
-          <li>브랜드 컬러 · 버튼 스타일 잠금</li>
-          <li>폰트 규칙 · 로고 여백 잠금</li>
-          <li>편집 중 자동 일관성 점수</li>
+          <li>색·폰트·버튼 규칙이 흔들리지 않아 재작업이 줄어듭니다</li>
+          <li>로고 여백과 카드 스타일이 유지되어 검수 시간이 짧아집니다</li>
+          <li>편집 중 일관성이 지켜져 배포 전 수정 실수가 줄어듭니다</li>
         </ul>
       </div>
       <div class="brand-lock">
         <div class="brand-lock-head">
-          <span class="title">Brand consistency check</span>
-          <span class="score">consistency · <b>96%</b></span>
+          <span class="title">편집 중에도 규칙 유지</span>
+          <span class="score">안정 · <b>96%</b></span>
+        </div>
+        <div class="brand-lock-summary">
+          <strong>잠금된 기준 4개</strong>
+          <span>시안이 바뀌어도 색·폰트·버튼·반경 규칙은 그대로 유지됩니다.</span>
         </div>
         <div class="lock-grid">
           <div class="lock-tile">
-            <span class="k">PRIMARY</span>
+            <span class="k">메인 색상</span>
             <div class="v"><span class="swatch" style="background: #052e16;"></span>#052E16<span class="lock-ic">🔒</span></div>
           </div>
           <div class="lock-tile">
-            <span class="k">ACCENT</span>
+            <span class="k">포인트 색상</span>
             <div class="v"><span class="swatch" style="background: #4ade80;"></span>#4ADE80<span class="lock-ic">🔒</span></div>
           </div>
           <div class="lock-tile">
-            <span class="k">FONT · DISPLAY</span>
+            <span class="k">폰트 · 디스플레이</span>
             <div class="v">Pretendard 800<span class="lock-ic">🔒</span></div>
           </div>
           <div class="lock-tile">
-            <span class="k">RADIUS</span>
+            <span class="k">모서리 반경</span>
             <div class="v">10px<span class="lock-ic">🔒</span></div>
           </div>
         </div>
         <div class="lock-warn">
           <span class="ic">!</span>
-          <span>2 components need review · Button hover state, badge contrast</span>
+          <span>2개 항목만 추가 검토하면 됩니다 · 버튼 hover 상태, 배지 대비</span>
         </div>
       </div>
     </div>
 
+    <p class="flow-note">편집 단계에서 지킨 규칙은 배포 직전 점검으로 자연스럽게 이어집니다.</p>
+
     <div class="feature-row reverse" id="launch">
       <div class="feature-copy">
         <span class="kicker">03 · LAUNCH CHECK</span>
-        <h3 class="h-card" style="font-size: 30px; letter-spacing: -0.02em;">배포 전, 한 번 더 자동 점검합니다.</h3>
-        <p class="sub" style="font-size: 16px;">모바일 깨짐, SEO, CTA 대비, 접근성, 이미지 용량, 로딩 속도, 폼 연결까지 자동으로 확인합니다.</p>
+        <h3 class="h-card">배포 직전에 깨짐과 오류를 한 번에 걸러냅니다.</h3>
+        <p class="sub">모바일, SEO, 접근성, 연결 상태를 한 번에 점검해 배포 전에 문제를 먼저 확인할 수 있습니다.</p>
         <ul>
-          <li>모바일 반응형 · SEO 메타 · 접근성</li>
-          <li>이미지 용량 · 로딩 속도 측정</li>
-          <li>폼 연결 상태 · CTA 클릭 가능성</li>
+          <li>모바일·SEO·접근성을 배포 전에 한 번에 확인합니다</li>
+          <li>이미지 용량과 로딩 속도 이슈를 먼저 걸러냅니다</li>
+          <li>CTA와 폼 연결을 점검해 실수 배포를 줄입니다</li>
         </ul>
       </div>
       <div class="launch">
         <div class="launch-head">
-          <span class="title">Launch Check · sian.design/lp/draft-014</span>
-          <span class="running"><span class="dot"></span>completed · 8.2s</span>
+          <span class="title">배포 직전 점검 · sian.design/lp/draft-014</span>
+          <span class="running"><span class="dot"></span>완료 · 8.2초</span>
+        </div>
+        <div class="launch-summary">
+          <strong>배포 전 경고 2건</strong>
+          <span>통과 5건 · 수정이 필요한 항목만 먼저 보입니다.</span>
         </div>
         <div class="launch-row">
           <span class="status ok">✓</span>
-          <span class="label">Mobile responsive</span>
-          <span class="meta">Passed · 7 breakpoints</span>
+          <span class="label">모바일 반응형</span>
+          <span class="meta">통과 · 7개 브레이크포인트</span>
         </div>
         <div class="launch-row">
           <span class="status warn">!</span>
-          <span class="label">SEO metadata</span>
-          <span class="meta">2 suggestions</span>
+          <span class="label">SEO 메타데이터</span>
+          <span class="meta">2개 제안</span>
         </div>
         <div class="launch-row">
           <span class="status ok">✓</span>
-          <span class="label">CTA contrast ratio</span>
+          <span class="label">CTA 대비 비율</span>
           <span class="meta">AAA · 13.4:1</span>
         </div>
         <div class="launch-row">
           <span class="status warn">!</span>
-          <span class="label">Accessibility</span>
-          <span class="meta">1 warning · alt text</span>
+          <span class="label">접근성</span>
+          <span class="meta">경고 1건 · alt text</span>
         </div>
         <div class="launch-row">
           <span class="status ok">✓</span>
-          <span class="label">Image optimization</span>
-          <span class="meta">142 KB total</span>
+          <span class="label">이미지 최적화</span>
+          <span class="meta">총 142 KB</span>
         </div>
         <div class="launch-row">
           <span class="status ok">✓</span>
-          <span class="label">Performance</span>
+          <span class="label">성능</span>
           <span class="meta">89 / 100</span>
         </div>
         <div class="launch-row">
           <span class="status ok">✓</span>
-          <span class="label">Form connection</span>
-          <span class="meta">Supabase · live</span>
+          <span class="label">폼 연결</span>
+          <span class="meta">Supabase · 연결됨</span>
         </div>
+        <div class="launch-foot">시각 패널만 봐도 점검 전 경고와 통과 상태가 한눈에 구분됩니다.</div>
       </div>
     </div>
   </div>

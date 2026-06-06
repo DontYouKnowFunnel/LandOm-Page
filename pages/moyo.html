@@ -152,6 +152,7 @@ img, svg { display: block; max-width: 100%; }
   font-size: 18px; line-height: 1.7; color: var(--ink-3); max-width: 660px; text-wrap: pretty;
   font-weight: 500;
 }
+.sub strong { color: var(--ink-2); font-weight: 700; }
 .kicker {
   font-family: var(--font-sans); font-size: 13px; letter-spacing: 0.04em;
   color: var(--accent-dark); text-transform: uppercase; font-weight: 900;
@@ -437,8 +438,9 @@ img, svg { display: block; max-width: 100%; }
   }
   .show-card .meta { padding: 16px; display: flex; flex-direction: column; gap: 6px; }
   .show-card .track-tag { width: fit-content; font-family: var(--font-mono); font-size: 10px; padding: 3px 8px; border-radius: 100px; background: var(--cream); border: 1px solid var(--accent-line); color: var(--accent); }
-  .show-card h4 { font-size: 14.5px; font-weight: 500; letter-spacing: -0.01em; line-height: 1.3; }
-  .show-card .by { font-family: var(--font-mono); font-size: 11px; color: var(--ink-4); margin-top: 4px; }
+  .show-card .card-fit { font-size: 12px; line-height: 1.45; color: var(--accent-dark); font-weight: 700; letter-spacing: -0.01em; }
+  .show-card h4 { font-size: 14.5px; font-weight: 600; letter-spacing: -0.01em; line-height: 1.35; color: var(--ink-2); }
+  .show-card .by { font-family: var(--font-mono); font-size: 11px; color: var(--ink-4); line-height: 1.5; }
 
   /* Diagnosis quiz teaser */
   .quiz {
@@ -531,6 +533,8 @@ img, svg { display: block; max-width: 100%; }
     .tl-week { min-height: auto; }
     .mentors { grid-template-columns: repeat(2, 1fr); }
     .showcase { grid-template-columns: repeat(2, 1fr); }
+    .show-card .meta { gap: 7px; }
+    .show-card .card-fit { font-size: 11.5px; }
     .quiz { grid-template-columns: 1fr; padding: 28px 20px; gap: 24px; }
     .final { padding: 56px 28px; border-radius: 14px; }
     .final h2 { font-size: 36px; }
@@ -546,6 +550,9 @@ img, svg { display: block; max-width: 100%; }
     .timeline { grid-template-columns: 1fr; }
     .mentors { grid-template-columns: 1fr; }
     .showcase { grid-template-columns: 1fr; }
+    .show-card .meta { padding: 14px; }
+    .show-card h4 { font-size: 14px; }
+    .show-card .card-fit { font-size: 11px; }
     .cohort-card { padding: 18px; }
     .final { padding: 48px 22px; }
     .final h2 { font-size: 30px; }
@@ -808,40 +815,44 @@ img, svg { display: block; max-width: 100%; }
   <div class="container">
     <div class="section-head">
       <span class="eyebrow"><span class="dot"></span> POSSIBLE OUTCOMES</span>
-      <h2 class="h-section">트랙별로 이런 결과물을 목표로 합니다.</h2>
-      <p class="sub">아직 공개된 지난 결과물이 아니라, 코호트에서 완성하도록 설계 중인 산출물 예시입니다.</p>
+      <h2 class="h-section">내 상황에 맞는 트랙이 어떤 결과물로 이어지는지 먼저 확인해보세요.</h2>
+      <p class="sub">각 트랙마다 <strong>어떤 고민에 잘 맞는지</strong>와 <strong>완성 후 어떤 형태가 되는지</strong>를 함께 정리했습니다.</p>
     </div>
     <div class="showcase">
       <div class="show-card">
         <div class="ph-img"><span>case study</span></div>
         <div class="meta">
           <span class="track-tag">Product Design</span>
+          <p class="card-fit">추천 대상 · 문제를 정리하고 사용성 개선 흐름까지 한 번에 보여주고 싶은 분</p>
           <h4>문제 정의부터 화면 설계까지 이어지는 포트폴리오 케이스</h4>
-          <span class="by">리서치 요약 · 사용자 흐름 · 핵심 화면 · 회고</span>
+          <p class="by">완성 후 결과 · 리서치 요약, 사용자 흐름, 핵심 화면, 회고가 담긴 사례</p>
         </div>
       </div>
       <div class="show-card">
         <div class="ph-img"><span>web project</span></div>
         <div class="meta">
           <span class="track-tag">Frontend</span>
+          <p class="card-fit">추천 대상 · 화면 구현과 인터랙션을 통해 실무형 완성도를 보여주고 싶은 분</p>
           <h4>배포 링크가 있는 인터랙티브 UI 또는 컴포넌트 프로젝트</h4>
-          <span class="by">React UI · 상태 설계 · 접근성 점검 · 기술 회고</span>
+          <p class="by">완성 후 결과 · React UI, 상태 설계, 접근성 점검, 기술 회고가 남는 결과물</p>
         </div>
       </div>
       <div class="show-card">
         <div class="ph-img"><span>product doc</span></div>
         <div class="meta">
           <span class="track-tag">PM</span>
+          <p class="card-fit">추천 대상 · 사용자 문제와 우선순위를 문서로 설득력 있게 정리하고 싶은 분</p>
           <h4>사용자 문제와 지표가 연결된 프로덕트 개선 문서</h4>
-          <span class="by">문제 가설 · 우선순위 · 사용자 여정 · 성공 지표</span>
+          <p class="by">완성 후 결과 · 문제 가설, 우선순위, 사용자 여정, 성공 지표를 담은 문서</p>
         </div>
       </div>
       <div class="show-card">
         <div class="ph-img"><span>growth plan</span></div>
         <div class="meta">
           <span class="track-tag">Marketing</span>
+          <p class="card-fit">추천 대상 · 타겟과 메시지, 채널을 묶어 실험 구조를 만들고 싶은 분</p>
           <h4>타겟, 메시지, 채널을 묶은 캠페인 실험 설계안</h4>
-          <span class="by">ICP · 랜딩 메시지 · 실험 플랜 · 성과 리포트 구조</span>
+          <p class="by">완성 후 결과 · ICP, 랜딩 메시지, 실험 플랜, 성과 리포트 구조가 정리된 안</p>
         </div>
       </div>
     </div>

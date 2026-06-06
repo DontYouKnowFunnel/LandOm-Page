@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>LandOm — 랜딩페이지 패턴으로 전환율 개선안을 찾는 AI</title>
+<title>LandOm — 랜딩페이지 전환 개선점을 찾는 AI</title>
 <link rel="icon" type="image/svg+xml" href="/assets/landom/favicon.svg" />
 <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
 <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
@@ -300,9 +300,10 @@ img, svg { display: block; max-width: 100%; }
     align-items: center;
     margin-top: 56px;
   }
-  .hero-copy { display: flex; flex-direction: column; gap: 24px; }
-  .hero-ctas { display: flex; gap: 12px; margin-top: 8px; }
-  .hero-meta { display: flex; gap: 16px; font-family: var(--font-mono); font-size: 12px; color: var(--ink-3); margin-top: 8px; }
+  .hero-copy { display: flex; flex-direction: column; gap: 18px; }
+  .hero-ctas { display: flex; gap: 12px; margin-top: 2px; }
+  .hero-note { max-width: 620px; font-size: 13px; line-height: 1.55; color: var(--ink-4); font-weight: 500; margin-top: -2px; }
+  .hero-meta { display: flex; flex-wrap: wrap; gap: 8px 16px; font-family: var(--font-mono); font-size: 12px; color: var(--ink-3); margin-top: 2px; }
 
   /* Demo image (browser preview + analysis panel) */
   .demo {
@@ -341,8 +342,8 @@ img, svg { display: block; max-width: 100%; }
   }
   .preview-body { padding: 28px 24px; display: flex; flex-direction: column; gap: 14px; min-height: 320px; }
   .preview-body .crumb { font-family: var(--font-mono); font-size: 10px; color: var(--ink-4); text-transform: uppercase; letter-spacing: 0.08em; }
-  .preview-body h3 { font-size: 22px; line-height: 1.2; letter-spacing: -0.02em; font-weight: 500; max-width: 340px; }
-  .preview-body p { font-size: 12.5px; color: var(--ink-3); max-width: 320px; line-height: 1.5; }
+  .preview-body h3 { font-size: 22px; line-height: 1.2; letter-spacing: -0.02em; font-weight: 500; max-width: 360px; }
+  .preview-body p { font-size: 12.5px; color: var(--ink-3); max-width: 340px; line-height: 1.5; }
   .preview-body .pbtn { display: inline-flex; align-items: center; gap: 6px; height: 30px; padding: 0 12px; border-radius: 6px; background: var(--ink); color: #fff; font-size: 11.5px; align-self: flex-start; margin-top: 6px; }
   .preview-body .pbtn.alt { background: #fff; color: var(--ink); border: 1px solid var(--line-strong); }
   .preview-body .pmock {
@@ -563,6 +564,7 @@ img, svg { display: block; max-width: 100%; }
 
     .demo.full { grid-template-columns: 1fr; padding: 16px; gap: 16px; margin-top: 36px; }
     .preview-pin { display: none; }
+    .hero-note { font-size: 12.5px; }
     .pattern-grid { grid-template-columns: repeat(2, 1fr); }
     .problems { grid-template-columns: repeat(2, 1fr); }
     .feature-row, .feature-row.reverse { grid-template-columns: 1fr; gap: 28px; padding: 36px 0; }
@@ -601,7 +603,7 @@ img, svg { display: block; max-width: 100%; }
       <a href="#changelog">Changelog</a>
     </div>
     <div class="nav-cta">
-      <a class="btn btn-primary" href="#cta">베타 사전 예약 <span class="arr">→</span></a>
+      <a class="btn btn-primary" href="#cta">무료 개선안 받기 <span class="arr">→</span></a>
     </div>
   </div>
 </nav>
@@ -610,22 +612,23 @@ img, svg { display: block; max-width: 100%; }
 <section class="section hero">
   <div class="container">
     <div class="hero-copy" style="max-width: 880px;">
-      <span class="eyebrow"><span class="dot"></span> AI LANDING PAGE COPILOT · v2.4</span>
+      <span class="eyebrow"><span class="dot"></span> 광고 유입은 있는데 전환이 낮은 랜딩페이지를 위한 AI</span>
       <h1 class="h-display">
-        <span class="hero-title-line">랜딩페이지 성공 패턴을 학습한 AI가</span>
-        <span class="hero-title-line" style="color: var(--ink-3);">내 페이지의 개선안을 찾아드립니다.</span>
+        <span class="hero-title-line">랜딩페이지 전환을 높이는</span>
+        <span class="hero-title-line" style="color: var(--ink-3);">개선점을 AI가 바로 찾아드립니다.</span>
       </h1>
       <p class="sub">
-        LandOm은 사용자의 클릭, 스크롤, 체류시간, 이탈 구간을 분석하고
-        유사한 랜딩페이지 개선 사례를 바탕으로 카피, CTA, 섹션 구조 개선안을 제안합니다.
+        광고 유입은 있는데 전환이 낮은 랜딩페이지를 빠르게 고치고 싶은 스타트업 마케터·대표를 위해,
+        클릭·스크롤·체류시간과 이탈 구간을 바탕으로 지금 손볼 카피와 구조를 우선순위로 제안합니다.
       </p>
       <div class="hero-ctas">
-        <a class="btn btn-primary btn-lg" href="#cta">LandOm 베타 사전 예약하기 <span class="arr">→</span></a>
+        <a class="btn btn-primary btn-lg" href="#cta">무료로 개선안 받기 <span class="arr">→</span></a>
       </div>
+      <p class="hero-note">지금 페이지에서 바꿔야 할 카피와 구조를 먼저 보여드립니다.</p>
       <div class="hero-meta">
-        <span>· private beta waitlist</span>
-        <span>· no payment required</span>
-        <span>· launch updates by email</span>
+        <span>· 스타트업 마케터·대표용</span>
+        <span>· 비용 없음</span>
+        <span>· 즉시 확인</span>
       </div>
     </div>
 
@@ -651,8 +654,8 @@ img, svg { display: block; max-width: 100%; }
       <!-- Right: analysis panel -->
       <div class="panel">
         <div class="panel-head">
-          <div class="panel-title"><span class="mk">Lo</span> LandOm Analysis</div>
-          <div class="panel-meta">live · 02:14</div>
+          <div class="panel-title"><span class="mk">Lo</span> LandOm 분석</div>
+          <div class="panel-meta">실시간 · 02:14</div>
         </div>
         <div class="tabs" id="tabs">
           <button class="tab active" data-tab="attune"><span class="dot"></span>Attune</button>
@@ -821,7 +824,7 @@ img, svg { display: block; max-width: 100%; }
             <div class="copy" style="color: var(--ink-2);">기능을 줄이고, 결과를 약속하세요. 14일 안에 첫 가설을 검증할 수 있습니다.</div>
           </div>
           <div class="panel-cta">
-            <span>Generate Better Section</span>
+            <span>섹션 개선안 만들기</span>
             <span class="arr">→</span>
           </div>
         </div>
@@ -905,12 +908,12 @@ img, svg { display: block; max-width: 100%; }
 <section class="section" id="cta" style="border-bottom: 0;">
   <div class="container">
     <div class="final">
-      <span class="eyebrow"><span class="dot"></span> EARLY ACCESS</span>
-      <h2>다음 분기, A/B 테스트보다<br/>먼저 가설을 좁히는 베타를 준비 중입니다.</h2>
-      <p>정식 공개 전, 초기 베타 초대와 랜딩페이지 개선 리포트 샘플을 이메일로 보내드립니다.</p>
+      <span class="eyebrow"><span class="dot"></span> FREE LANDING PAGE REVIEW</span>
+      <h2>지금 페이지에서 바꿔야 할<br/>카피와 구조를 먼저 확인하세요.</h2>
+      <p>광고 유입은 있지만 전환이 낮은 페이지라면, 우선 손볼 섹션과 카피 방향을 이메일로 받아보세요.</p>
       <form class="lead-form" data-lead-form data-service="landom" data-language="ko" data-cta-id="final">
         <input type="email" name="email" placeholder="업무용 이메일" autocomplete="email" aria-label="업무용 이메일" required />
-        <button class="btn btn-primary btn-lg" type="submit">베타 사전 예약하기 <span class="arr">→</span></button>
+        <button class="btn btn-primary btn-lg" type="submit">무료로 개선안 받기 <span class="arr">→</span></button>
         <p class="lead-status" role="status" aria-live="polite"></p>
       </form>
     </div>
@@ -922,7 +925,7 @@ img, svg { display: block; max-width: 100%; }
   <div class="footer-row">
     <div class="footer-col" style="max-width: 280px;">
       <div class="brand"><span class="brand-mark"><img src="/assets/landom/favicon.svg" alt="" aria-hidden="true" /></span> LandOm</div>
-      <p style="margin-top: 8px;">랜딩페이지 패턴을 학습한 AI로, 이탈 원인을 찾고 구체적인 개선안을 제안합니다.</p>
+      <p style="margin-top: 8px;">클릭·스크롤·체류시간과 이탈 구간을 바탕으로, 지금 손볼 랜딩페이지 카피와 구조를 제안합니다.</p>
     </div>
     <div class="footer-col">
       <h5>Product</h5>
@@ -952,16 +955,16 @@ img, svg { display: block; max-width: 100%; }
     attune: {
       url: "attune.io/lp",
       preview: {
-        crumb: "ATTUNE · SALES MESSAGING AI",
-        h: "모든 리드에게 같은 이메일을 보내지 마세요",
-        p: "고객의 행동을 읽고, LLM이 가장 알맞은 세일즈 이메일을 자동으로 작성합니다.",
-        cta: "Attune 베타 알림 신청"
+        crumb: "LANDOM · 랜딩페이지 진단",
+        h: "랜딩페이지 전환을 높이는 개선점을 AI가 바로 찾아드립니다.",
+        p: "클릭·스크롤·체류시간과 이탈 구간을 바탕으로 지금 손볼 카피와 구조를 우선순위로 제안합니다.",
+        cta: "무료로 개선안 받기"
       },
-      pattern: "SaaS / B2B / Free Trial CTA",
+      pattern: "광고 유입 랜딩페이지 / 전환 개선",
       ref: "142 similar pages",
-      issue: "Hero CTA is feature-led; outcome benefit is missing",
-      copy: "방문자가 얻을 결과를 먼저 약속하고, 기능 설명을 뒤로 미는 구조를 추천합니다.",
-      hero: '"고객의 행동을 읽고, 닫힌 거래를 다시 여세요"',
+      issue: "첫 화면이 기능 설명부터 시작해 결과가 늦게 보입니다.",
+      copy: "방문자가 얻을 전환 개선 결과를 먼저 약속하고, 기능 설명은 뒤로 미루는 구조를 추천합니다.",
+      hero: "랜딩페이지 전환을 높이는 개선점을 AI가 바로 찾아드립니다.",
       pin: "Hero Section · Drop-off 38%"
     },
     moyo: {
@@ -1053,7 +1056,7 @@ img, svg { display: block; max-width: 100%; }
         <div class="copy" style="color: var(--ink-2);">${d.hero}</div>
       </div>
       <div class="panel-cta">
-        <span>Generate Better Section</span>
+        <span>지금 개선안 보기</span>
         <span class="arr">→</span>
       </div>
     `;
